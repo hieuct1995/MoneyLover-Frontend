@@ -29,64 +29,12 @@ export const validateInput = Yup.object({
 export default function LoginOrRegister({ props }) {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(props);
-    const [checkValidUser, setCheckValidUser] = useState(true);
-    const [checkValidRegister, setCheckValidRegister] = useState(true);
+    // const [checkValidUser, setCheckValidUser] = useState(true);
+    // const [checkValidRegister, setCheckValidRegister] = useState(true);
     const dispatch = useDispatch()
     const formik = useFormik({
         initialValues: { email: '', password: '' },
         validationSchema: validateInput,
-        // onSubmit: values => {
-        //     if (isLogin) {
-        //         //Login
-        //         dispatch(loginStart())
-        //         UserService.checkUserLogin(values).then(res => {
-        //                 let userLogin = res.data.user;
-        //                 const email = userLogin?.email;
-        //                 if (userLogin && res.data.message === 'Login success!') {
-        //                     const token = res.data.token;
-        //                     localStorage.setItem('token', token);
-        //                     localStorage.setItem('user', email);
-        //                     dispatch(loginSuccess(userLogin));
-        //                     // Call API gui mail report:
-        //                     UserService.sendReport(userLogin.id, token).then(()=>{
-        //                         WalletService.getAllWallet(token).then(res => {
-        //                             let walletList = res.data.walletList;
-        //                             dispatch(getAllWallet(walletList));
-        //                             if (walletList.length > 0) {
-        //                                 dispatch(setWalletSelect(walletList[0]))
-        //                                 navigate('/');
-        //                             } else navigate('/my-wallets')
-        //                         })
-        //                     })
-        //                 } else {
-        //                     setCheckValidUser(false);
-        //                     dispatch(loginFailed());
-        //                 }
-        //             }
-        //         ).catch(err => {
-        //             console.log(err.message);
-        //         })
-
-        //     } else {
-        //         //Register
-        //         dispatch(registerStart());
-        //         UserService.createUser(values).then((res) => {
-        //             console.log(res.data)
-        //             let newUser = res.data.newUser;
-        //             if (newUser && res.data.message === "Creat user success. Please check your email register for verify!") {
-        //                 dispatch(registerSuccess())
-        //                 setIsLogin(true);
-        //                 navigate("/login");
-        //             } else {
-        //                 setCheckValidRegister(false);
-        //                 dispatch(registerFailed());
-        //             }
-        //         }).catch(err => {
-        //             console.log(err.message)
-        //         })
-        //     }
-        //     formik.resetForm()
-        // },
         onSubmit: values => {
             if (isLogin) {
                 // Hiển thị modal loading
@@ -132,7 +80,7 @@ export default function LoginOrRegister({ props }) {
                         })
                     } else {
                         loadingModal.close(); // Đóng modal loading
-                        setCheckValidUser(false);
+                        // setCheckValidUser(false);
                         dispatch(loginFailed());
                         Swal.fire({
                             title: 'Đăng nhập thất bại',
@@ -149,7 +97,7 @@ export default function LoginOrRegister({ props }) {
             else {
                 //Register
                 const loadingModalRegister = Swal.fire({
-                    title: 'Đang đăng nhập...',
+                    title: 'Đang đăng ký...',
                     icon: 'info',
                     showConfirmButton: false,
                     allowOutsideClick: false,
@@ -174,7 +122,7 @@ export default function LoginOrRegister({ props }) {
                             navigate("/login");
                         })
                     } else {
-                        setCheckValidRegister(false);
+                        // setCheckValidRegister(false);
                         dispatch(registerFailed());
                         loadingModalRegister.close();
                         Swal.fire({
@@ -203,23 +151,23 @@ export default function LoginOrRegister({ props }) {
         setIsLogin(!isLogin)
     }
 
-    useEffect(() => {
-        // Xử lý sự kiện click bất kỳ đâu ở background
-        const handleClickOutside = (event) => {
-            const errorMessageLogin = document.getElementById("errorMessageLogin");
-            const errorMessageRegister = document.getElementById("errorMessageRegister");
-            if (errorMessageLogin && !errorMessageLogin.contains(event.target)) {
-                setCheckValidUser(true);
-            }
-            if (errorMessageRegister && !errorMessageRegister.contains(event.target)) {
-                setCheckValidRegister(true);
-            }
-        };
-        document.addEventListener("click", handleClickOutside);
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        };
-    }, []);
+    // useEffect(() => {
+    //     // Xử lý sự kiện click bất kỳ đâu ở background
+    //     const handleClickOutside = (event) => {
+    //         const errorMessageLogin = document.getElementById("errorMessageLogin");
+    //         const errorMessageRegister = document.getElementById("errorMessageRegister");
+    //         if (errorMessageLogin && !errorMessageLogin.contains(event.target)) {
+    //             setCheckValidUser(true);
+    //         }
+    //         if (errorMessageRegister && !errorMessageRegister.contains(event.target)) {
+    //             setCheckValidRegister(true);
+    //         }
+    //     };
+    //     document.addEventListener("click", handleClickOutside);
+    //     return () => {
+    //         document.removeEventListener("click", handleClickOutside);
+    //     };
+    // }, []);
 
     return (
         <>
@@ -296,8 +244,8 @@ export default function LoginOrRegister({ props }) {
                             </div>
                         </div>
                     </div>
-                    {(!checkValidUser && isLogin) ? <div id="errorMessageLogin" className="mx-auto text-center bg-black text-amber-50 mt-12 rounded shadow-md px-8 py-3 w-max">Invalid email/password combination. Please try again.</div> : null}
-                    {(!checkValidRegister && !isLogin) ? <div id="errorMessageRegister" className="mx-auto text-center bg-black text-amber-50 mt-12 rounded shadow-md px-8 py-3 w-max">Email already exist. Please try again.</div> : null}
+                    {/* {(!checkValidUser && isLogin) ? <div id="errorMessageLogin" className="mx-auto text-center bg-black text-amber-50 mt-12 rounded shadow-md px-8 py-3 w-max">Invalid email/password combination. Please try again.</div> : null}
+                    {(!checkValidRegister && !isLogin) ? <div id="errorMessageRegister" className="mx-auto text-center bg-black text-amber-50 mt-12 rounded shadow-md px-8 py-3 w-max">Email already exist. Please try again.</div> : null} */}
                 </div>
             </div>
         </>
