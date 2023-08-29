@@ -5,8 +5,14 @@ import TransactionCard from "../components/transactions/TransactionCard";
 import { useDispatch } from "react-redux";
 import { WalletService } from "../services/wallet.service";
 import { useNavigate } from "react-router-dom";
-import ClipLoader from "react-spinners/ClipLoader";
+import PacmanLoader from "react-spinners/PacmanLoader";
 import { getAllWallet as setAllWallet } from "../redux/walletSlice";
+
+const override = {
+    display: "block",
+    margin: "0 auto",
+    borderColor: "red",
+  };
 
 export default function HomePage() {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -18,9 +24,6 @@ export default function HomePage() {
         try {
             setIsLoading(true);
             WalletService.getAllWallet().then(res => {
-                console.log('====================================');
-                console.log(res);
-                console.log('====================================');
                 let walletList = res.data.walletList;
                 dispatch(setAllWallet(walletList));
                 if (walletList.length > 0) {
@@ -53,9 +56,10 @@ export default function HomePage() {
                     </div>
                 </>
                 :
-            <ClipLoader
+            <PacmanLoader
                 size={50}
                 loading={isLoading}
+                cssOverride={override}
                 aria-label="Loading Spinner"
                 color="#36d7b7"
             />
