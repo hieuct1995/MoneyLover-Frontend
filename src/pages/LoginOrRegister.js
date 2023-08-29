@@ -116,9 +116,9 @@ export default function LoginOrRegister({ props }) {
                             showConfirmButton: false,
                             timer: 1000
                         }).then(() => {
+                            dispatch(loginSuccess(userLogin));
                             UserService.sendReport(userLogin.id, token).then(() => {
                                 WalletService.getAllWallet(token).then(res => {
-                                    dispatch(loginSuccess(userLogin));
                                     let walletList = res.data.walletList;
                                     dispatch(getAllWallet(walletList));
                                     if (walletList.length > 0) {

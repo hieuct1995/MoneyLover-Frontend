@@ -3,7 +3,6 @@ import NestedModal from "../../components/modals/NestedModal";
 import CardWallet from "../../components/layout/CardWallet";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import VariantsSpin from "../../components/alert/SpinLoading";
 
 export default function MyWallet() {
     const [showModal, setShowModal] = useState(false);
@@ -31,7 +30,9 @@ export default function MyWallet() {
                 {!showModal && <CardWallet />}
             </div>
                 :
-                <VariantsSpin/>
+                <div>
+                    loading
+                </div>
             }
 
         </>
