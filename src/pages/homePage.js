@@ -10,7 +10,10 @@ import { getAllWallet as setAllWallet } from "../redux/walletSlice";
 
 const override = {
     display: "block",
-    margin: "auto",
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    transform: 'translate(-50%, -50%)',
   };
 
 export default function HomePage() {
@@ -23,9 +26,6 @@ export default function HomePage() {
         try {
             setIsLoading(true);
             WalletService.getAllWallet().then(res => {
-                console.log('====================================');
-                console.log(123);
-                console.log('====================================');
                 let walletList = res.data.walletList;
                 dispatch(setAllWallet(walletList));
                 if (walletList.length > 0) {
