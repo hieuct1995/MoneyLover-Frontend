@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { WalletService } from "../services/wallet.service";
 import { useNavigate } from "react-router-dom";
 import { PacmanLoader } from "react-spinners/ClipLoader"
-import { setAllWallet } from "../redux/walletSlice";
+import { getAllWallet as setAllWallet } from "../redux/walletSlice";
 
 export default function HomePage() {
     const [isModalVisible, setModalVisible] = useState(false);
