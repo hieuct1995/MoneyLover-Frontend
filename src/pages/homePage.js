@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import NavBar from "../components/layout/NavBar";
 import Sidebar from "../components/layout/Sidebar";
 import TransactionCard from "../components/transactions/TransactionCard";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { WalletService } from "../services/wallet.service";
-import { getAllWallet } from "../redux/walletSlice";
 import { useNavigate } from "react-router-dom";
 import { PacmanLoader } from "react-spinners/ClipLoader"
+import { setAllWallet } from "../redux/walletSlice";
 
 export default function HomePage() {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -18,8 +18,11 @@ export default function HomePage() {
         try {
             setIsLoading(true);
             WalletService.getAllWallet().then(res => {
+                console.log('====================================');
+                console.log(res);
+                console.log('====================================');
                 let walletList = res.data.walletList;
-                dispatch(getAllWallet(walletList));
+                dispatch(setAllWallet(walletList));
                 if (walletList.length > 0) {
                     setIsLoading(false);
                 } else (
