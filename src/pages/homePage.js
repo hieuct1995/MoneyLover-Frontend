@@ -6,27 +6,34 @@ import { useDispatch, useSelector } from "react-redux";
 import { WalletService } from "../services/wallet.service";
 import { getAllWallet } from "../redux/walletSlice";
 import { useNavigate } from "react-router-dom";
-import {PacmanLoader} from "react-spinners/ClipLoader"
+import { PacmanLoader } from "react-spinners/ClipLoader"
 
 export default function HomePage() {
     const [isModalVisible, setModalVisible] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
+    const getAllWallet = () => {
+        try {
+            setIsLoading(true);
+            WalletService.getAllWallet().then(res => {
+                let walletList = res.data.walletList;
+                dispatch(getAllWallet(walletList));
+                if (walletList.length > 0) {
+                    setIsLoading(false);
+                } else (
+                    navigate('/my-wallets')
+                )
+            })
+        } catch (error) {
+            console.log(error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    }
     useEffect(() => {
-        WalletService.getAllWallet().then(res => {
-            console.log('====================================');
-            console.log(res);
-            console.log('====================================');
-            let walletList = res.data.walletList;
-            dispatch(getAllWallet(walletList));
-            if (walletList.length > 0) {
-                setIsLoading(false);
-            } else (
-                navigate('/my-wallets')
-            )
-        })
+        getAllWallet();
     }, [])
     const handleOpenModal = () => {
         setModalVisible(true);
@@ -36,7 +43,7 @@ export default function HomePage() {
     };
     return (
         <>
-            {!isLoading &&
+            {!isLoading ?
                 <>
                     <NavBar onClickAddBtn={handleOpenModal} />
                     <div>
@@ -44,13 +51,13 @@ export default function HomePage() {
                         <div> <TransactionCard openModal={isModalVisible} closeModal={handleCloseModal} /></div>
                     </div>
                 </>
-            }
+                :
             <PacmanLoader
-                loading={isLoading}
                 size={25}
                 aria-label="Loading Spinner"
                 color="#36d7b7"
             />
+            }
         </>
     )
 }
