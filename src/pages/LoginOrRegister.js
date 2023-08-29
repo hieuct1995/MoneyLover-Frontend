@@ -147,24 +147,48 @@ export default function LoginOrRegister({ props }) {
                 });
             }
             else {
-                        //Register
-                        dispatch(registerStart());
-                        UserService.createUser(values).then((res) => {
-                            console.log(res.data)
-                            let newUser = res.data.newUser;
-                            if (newUser && res.data.message === "Creat user success. Please check your email register for verify!") {
-                                dispatch(registerSuccess())
-                                setIsLogin(true);
-                                navigate("/login");
-                            } else {
-                                setCheckValidRegister(false);
-                                dispatch(registerFailed());
-                            }
-                        }).catch(err => {
-                            console.log(err.message)
-                        })
+                //Register
+                const loadingModalRegister = Swal.fire({
+                    title: 'Đang đăng nhập...',
+                    icon: 'info',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading();
                     }
-                    formik.resetForm()
+                });
+                dispatch(registerStart());
+                UserService.createUser(values).then((res) => {
+                    console.log(res.data)
+                    let newUser = res.data.newUser;
+                    if (newUser && res.data.message === "Creat user success. Please check your email register for verify!") {
+                        loadingModalRegister.close();
+                        Swal.fire({
+                            title: 'Đăng ký thành công!',
+                            text: 'Vui lòng xác thực tài khoản qua email vừa đăng ký',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            dispatch(registerSuccess())
+                            setIsLogin(true);
+                            navigate("/login");
+                        })
+                    } else {
+                        setCheckValidRegister(false);
+                        dispatch(registerFailed());
+                        loadingModalRegister.close();
+                        Swal.fire({
+                            title: 'Đăng ký thất bại',
+                            text: 'Tên tài khoản đã tồn tại.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                }).catch(err => {
+                    console.log(err.message)
+                })
+            }
+            formik.resetForm()
         }
 
     });
