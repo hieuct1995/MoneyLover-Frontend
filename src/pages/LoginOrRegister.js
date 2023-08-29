@@ -111,23 +111,34 @@ export default function LoginOrRegister({ props }) {
                         dispatch(loginSuccess(userLogin));
 
                         // Gọi API gửi mail report
-                        UserService.sendReport(userLogin.id, token).then(() => {
-                            loadingModal.close(); // Đóng modal loading
-                            Swal.fire({
-                                title: 'Đăng nhập thành công',
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 1000
-                            }).then(() => {
+                        loadingModal.close(); // Đóng modal loading
+                        Swal.fire({
+                            title: 'Đăng nhập thành công',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1000
+                        }).then(() => {
+                            UserService.sendReport(userLogin.id, token).then(() => {
                                 WalletService.getAllWallet(token).then(res => {
-                                    let walletList = res.data.walletList;
-                                    dispatch(getAllWallet(walletList));
-                                    if (walletList.length > 0) {
-                                        dispatch(setWalletSelect(walletList[0]));
-                                        navigate('/');
-                                    } else {
-                                        navigate('/my-wallets');
-                                    }
+                                    const loadingModal = Swal.fire({
+                                        title: 'Đang kiểm tra dữ liệu...',
+                                        icon: 'info',
+                                        showConfirmButton: false,
+                                        allowOutsideClick: false,
+                                        onBeforeOpen: () => {
+                                            Swal.showLoading();
+                                        }
+                                    }).then (() => {
+                                        loadingModal.close();
+                                        let walletList = res.data.walletList;
+                                        dispatch(getAllWallet(walletList));
+                                        if (walletList.length > 0) {
+                                            dispatch(setWalletSelect(walletList[0]));
+                                            navigate('/');
+                                        } else {
+                                            navigate('/my-wallets');
+                                        }
+                                    })
                                 });
                             });
                         })
