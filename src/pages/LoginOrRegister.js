@@ -15,7 +15,7 @@ import {
 import {WalletService} from "../services/wallet.service";
 import {getAllWallet, getMessage, setSocket, setWalletSelect} from "../redux/walletSlice";
 import * as React from "react";
-import { showSuccessAlert } from "../components/alert/AlertModal";
+import Swal from 'sweetalert2';
 
 
 export const validateInput = Yup.object({
@@ -31,6 +31,7 @@ export default function LoginOrRegister({props}) {
     const [isLogin, setIsLogin] = useState(props);
     const [checkValidUser, setCheckValidUser] = useState(true);
     const [checkValidRegister, setCheckValidRegister] = useState(true);
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch()
     const formik = useFormik({
         initialValues: {email: '', password: ''},
@@ -39,34 +40,82 @@ export default function LoginOrRegister({props}) {
             if (isLogin) {
                 //Login
                 dispatch(loginStart())
-                UserService.checkUserLogin(values).then(res => {
-                        let userLogin = res.data.user;
-                        showSuccessAlert(userLogin);
-                        const email = userLogin?.email;
-                        if (userLogin && res.data.message === 'Login success!') {
-                            const token = res.data.token;
-                            localStorage.setItem('token', token);
-                            localStorage.setItem('user', email);
-                            dispatch(loginSuccess(userLogin));
-                            // Call API gui mail report:
-                            UserService.sendReport(userLogin.id, token).then(()=>{
-                                WalletService.getAllWallet(token).then(res => {
-                                    let walletList = res.data.walletList;
-                                    dispatch(getAllWallet(walletList));
-                                    if (walletList.length > 0) {
-                                        dispatch(setWalletSelect(walletList[0]))
-                                        navigate('/');
-                                    } else navigate('/my-wallets')
-                                })
+                Swal.fire({
+                    title: 'Logging in...',
+                    showLoaderOnConfirm: true,
+                    allowOutsideClick: false, // Prevent dismissing the modal
+                    preConfirm: () => {
+                        setLoading(true); // Show loading indicator
+                        return UserService.checkUserLogin(values)
+                            .then(res => {
+                                let userLogin = res.data.user;
+                                const email = userLogin?.email;
+                                if (userLogin && res.data.message === 'Login success!') {
+                                    const token = res.data.token;
+                                    localStorage.setItem('token', token);
+                                    localStorage.setItem('user', email);
+                                    dispatch(loginSuccess(userLogin));
+                                    return { success: true };
+                                } else {
+                                    setCheckValidUser(false);
+                                    dispatch(loginFailed());
+                                    return { success: false };
+                                }
                             })
-                        } else {
-                            setCheckValidUser(false);
-                            dispatch(loginFailed());
-                        }
+                            .catch(error => {
+                                // Handle API request errors here
+                                return { success: false };
+                            })
+                            .finally(() => {
+                                setLoading(false); // Hide loading indicator
+                            });
+                    },
+                }).then(result => {
+                    if (result.value.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Login Successful!',
+                            text: 'You have successfully logged in.',
+                        });
+                        // Continue with your API calls and navigation
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Login Failed',
+                            text: 'Invalid credentials. Please try again.',
+                        });
                     }
-                ).catch(err => {
-                    console.log(err.message);
-                })
+                });
+                
+                
+                // UserService.checkUserLogin(values).then(res => {
+                //         let userLogin = res.data.user;
+                //         // showSuccessAlert(userLogin);
+                //         const email = userLogin?.email;
+                //         if (userLogin && res.data.message === 'Login success!') {
+                //             const token = res.data.token;
+                //             localStorage.setItem('token', token);
+                //             localStorage.setItem('user', email);
+                //             dispatch(loginSuccess(userLogin));
+                //             // Call API gui mail report:
+                //             UserService.sendReport(userLogin.id, token).then(()=>{
+                //                 WalletService.getAllWallet(token).then(res => {
+                //                     let walletList = res.data.walletList;
+                //                     dispatch(getAllWallet(walletList));
+                //                     if (walletList.length > 0) {
+                //                         dispatch(setWalletSelect(walletList[0]))
+                //                         navigate('/');
+                //                     } else navigate('/my-wallets')
+                //                 })
+                //             })
+                //         } else {
+                //             setCheckValidUser(false);
+                //             dispatch(loginFailed());
+                //         }
+                //     }
+                // ).catch(err => {
+                //     console.log(err.message);
+                // })
 
             } else {
                 //Register
