@@ -5,7 +5,7 @@ import TransactionCard from "../components/transactions/TransactionCard";
 import { useDispatch } from "react-redux";
 import { WalletService } from "../services/wallet.service";
 import { useNavigate } from "react-router-dom";
-import { PacmanLoader } from "react-spinners/ClipLoader"
+import { PacmanLoader } from "react-spinners"
 import { getAllWallet as setAllWallet } from "../redux/walletSlice";
 
 export default function HomePage() {
