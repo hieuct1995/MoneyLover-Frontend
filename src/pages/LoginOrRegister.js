@@ -108,8 +108,6 @@ export default function LoginOrRegister({ props }) {
                         const token = res.data.token;
                         localStorage.setItem('token', token);
                         localStorage.setItem('user', email);
-                        dispatch(loginSuccess(userLogin));
-
                         // Gọi API gửi mail report
                         loadingModal.close(); // Đóng modal loading
                         Swal.fire({
@@ -120,25 +118,15 @@ export default function LoginOrRegister({ props }) {
                         }).then(() => {
                             UserService.sendReport(userLogin.id, token).then(() => {
                                 WalletService.getAllWallet(token).then(res => {
-                                    const loadingModal = Swal.fire({
-                                        title: 'Đang kiểm tra dữ liệu...',
-                                        icon: 'info',
-                                        showConfirmButton: false,
-                                        allowOutsideClick: false,
-                                        onBeforeOpen: () => {
-                                            Swal.showLoading();
-                                        }
-                                    }).then (() => {
-                                        loadingModal.close();
-                                        let walletList = res.data.walletList;
-                                        dispatch(getAllWallet(walletList));
-                                        if (walletList.length > 0) {
-                                            dispatch(setWalletSelect(walletList[0]));
-                                            navigate('/');
-                                        } else {
-                                            navigate('/my-wallets');
-                                        }
-                                    })
+                                    dispatch(loginSuccess(userLogin));
+                                    let walletList = res.data.walletList;
+                                    dispatch(getAllWallet(walletList));
+                                    if (walletList.length > 0) {
+                                        dispatch(setWalletSelect(walletList[0]));
+                                        navigate('/');
+                                    } else {
+                                        navigate('/my-wallets');
+                                    }
                                 });
                             });
                         })
@@ -159,24 +147,24 @@ export default function LoginOrRegister({ props }) {
                 });
             }
             else {
-                //Register
-                dispatch(registerStart());
-                UserService.createUser(values).then((res) => {
-                    console.log(res.data)
-                    let newUser = res.data.newUser;
-                    if (newUser && res.data.message === "Creat user success. Please check your email register for verify!") {
-                        dispatch(registerSuccess())
-                        setIsLogin(true);
-                        navigate("/login");
-                    } else {
-                        setCheckValidRegister(false);
-                        dispatch(registerFailed());
+                        //Register
+                        dispatch(registerStart());
+                        UserService.createUser(values).then((res) => {
+                            console.log(res.data)
+                            let newUser = res.data.newUser;
+                            if (newUser && res.data.message === "Creat user success. Please check your email register for verify!") {
+                                dispatch(registerSuccess())
+                                setIsLogin(true);
+                                navigate("/login");
+                            } else {
+                                setCheckValidRegister(false);
+                                dispatch(registerFailed());
+                            }
+                        }).catch(err => {
+                            console.log(err.message)
+                        })
                     }
-                }).catch(err => {
-                    console.log(err.message)
-                })
-            }
-            formik.resetForm()
+                    formik.resetForm()
         }
 
     });
