@@ -10,8 +10,7 @@ import { getAllWallet as setAllWallet } from "../redux/walletSlice";
 
 const override = {
     display: "block",
-    margin: "0 auto",
-    borderColor: "red",
+    margin: "auto",
   };
 
 export default function HomePage() {
