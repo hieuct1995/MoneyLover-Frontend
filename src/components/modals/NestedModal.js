@@ -70,6 +70,7 @@ export default function NestedModal({ isOpen, onClose, onSubmit }) {
     let currencyID = currencySelect?.id;
     let amountOfMoney = dataInput.amountOfMoney;
     let date = formatDate(new Date());
+    onSubmit();
     const loadingModal = Swal.fire({
       title: 'Đang tạo ví...',
       icon: 'info',
@@ -96,7 +97,6 @@ export default function NestedModal({ isOpen, onClose, onSubmit }) {
         setIconSelect({ id: 1, icon: 'https://static.moneylover.me/img/icon/icon.png' });
         setCurrencySelect(null);
         setIsValid(false)
-        onSubmit();
       })
     }).catch(err => console.log(err.message));
   }
