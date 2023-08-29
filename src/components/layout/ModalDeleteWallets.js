@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { getAllWallet, setWalletSelect } from "../../redux/walletSlice";
 import { useTranslation } from "react-i18next";
 import { transactionLogout } from '../../redux/transactionSlice';
-import PacmanLoader from "react-spinners/PacmanLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const override = {
     position: "absolute",
@@ -74,7 +74,7 @@ export default function ModalDeleteWallets({ idWallet, onClose }) {
                 }}>
                     {t("DELETE")}
                 </Button>
-                <PacmanLoader
+                <ClipLoader
                     size={25}
                     loading={isLoading}
                     cssOverride={override}
