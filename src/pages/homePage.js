@@ -5,7 +5,7 @@ import TransactionCard from "../components/transactions/TransactionCard";
 import { useDispatch } from "react-redux";
 import { WalletService } from "../services/wallet.service";
 import { useNavigate } from "react-router-dom";
-import { PacmanLoader } from "react-spinners"
+import ClipLoader from "react-spinners/ClipLoader";
 import { getAllWallet as setAllWallet } from "../redux/walletSlice";
 
 export default function HomePage() {
@@ -31,8 +31,6 @@ export default function HomePage() {
             })
         } catch (error) {
             console.log(error.message);
-        } finally {
-            setIsLoading(false);
         }
     }
     useEffect(() => {
@@ -55,8 +53,8 @@ export default function HomePage() {
                     </div>
                 </>
                 :
-            <PacmanLoader
-                size={25}
+            <ClipLoader
+                size={50}
                 loading={isLoading}
                 aria-label="Loading Spinner"
                 color="#36d7b7"
