@@ -4,15 +4,9 @@ import Sidebar from "../components/layout/Sidebar";
 import TransactionCard from "../components/transactions/TransactionCard";
 import { useDispatch, useSelector } from "react-redux";
 import { WalletService } from "../services/wallet.service";
-import PacmanLoader from "react-spinners"
 import { getAllWallet } from "../redux/walletSlice";
 import { useNavigate } from "react-router-dom";
-
-const override= {
-    display: "block",
-    margin: "0 auto",
-    borderColor: "red",
-};
+import {PacmanLoader} from "react-spinners/ClipLoader"
 
 export default function HomePage() {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -25,7 +19,7 @@ export default function HomePage() {
             let walletList = res.data.walletList;
             dispatch(getAllWallet(walletList));
             if (walletList.length > 0) {
-                setIsLoading(true);
+                setIsLoading(false);
             } else (
                 navigate('/my-wallets')
             )
@@ -39,18 +33,21 @@ export default function HomePage() {
     };
     return (
         <>
-            <NavBar onClickAddBtn={handleOpenModal} />
-            {!isLoading ?
-                <div>
-                    <Sidebar />
-                    <div> <TransactionCard openModal={isModalVisible} closeModal={handleCloseModal} /></div>
-                </div>
-                :
-                <PacmanLoader
-                    cssOverride={override}
-                    color="#36d7b7"
-                />
+            {!isLoading &&
+                <>
+                    <NavBar onClickAddBtn={handleOpenModal} />
+                    <div>
+                        <Sidebar />
+                        <div> <TransactionCard openModal={isModalVisible} closeModal={handleCloseModal} /></div>
+                    </div>
+                </>
             }
+            <PacmanLoader
+                loading={isLoading}
+                size={25}
+                aria-label="Loading Spinner"
+                color="#36d7b7"
+            />
         </>
     )
 }
