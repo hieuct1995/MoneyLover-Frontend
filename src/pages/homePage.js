@@ -16,6 +16,9 @@ export default function HomePage() {
 
     useEffect(() => {
         WalletService.getAllWallet().then(res => {
+            console.log('====================================');
+            console.log(res);
+            console.log('====================================');
             let walletList = res.data.walletList;
             dispatch(getAllWallet(walletList));
             if (walletList.length > 0) {
