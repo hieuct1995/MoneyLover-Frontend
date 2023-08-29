@@ -8,7 +8,7 @@ import { getAllWallet, setWalletSelect } from '../../redux/walletSlice';
 import CurrencyInput from 'react-currency-input-field';
 import { formatDate } from "../datePick/datePick";
 import { useTranslation } from "react-i18next";
-import Swal from 'sweetalert2';
+import PacmanLoader from 'react-spinners/PacmanLoader';
 
 const style = {
   position: 'absolute',
@@ -22,6 +22,7 @@ const style = {
 };
 
 export default function NestedModal({ isOpen, onClose, onSubmit }) {
+  const [isLoading, setIsLoading] = React.useState(false);
   const [dataInput, setDataInput] = React.useState({ name: '', amountOfMoney: null });
   const [isValid, setIsValid] = React.useState(false);
   const [currencySelect, setCurrencySelect] = React.useState(null);
@@ -65,39 +66,24 @@ export default function NestedModal({ isOpen, onClose, onSubmit }) {
   }, [dataInput])
 
   const handleSubmit = () => {
+    setIsLoading(true);
     let name = dataInput.name;
     let iconID = iconSelect.id;
     let currencyID = currencySelect?.id;
     let amountOfMoney = dataInput.amountOfMoney;
     let date = formatDate(new Date());
-    onSubmit();
-    const loadingModal = Swal.fire({
-      title: 'Đang tạo ví...',
-      icon: 'info',
-      showConfirmButton: false,
-      allowOutsideClick: false,
-      onBeforeOpen: () => {
-        Swal.showLoading();
-      }
-    });
     WalletService.createWallet({ name, iconID, currencyID, amountOfMoney, date }).then((res) => {
-      loadingModal.close(); // Đóng modal loading
-      Swal.fire({
-        title: 'Tạo ví thành công',
-        icon: 'success',
-        showConfirmButton: false,
-        timer: 1000
-      }).then(() => {
-        let wallet = res.data.newWallet;
-        let walletRole = res.data.walletRole;
-        wallet = { ...wallet, walletRoles: [walletRole] };
-        dispatch(getAllWallet([...allWallet, wallet]));
-        dispatch(setWalletSelect(wallet));
-        setDataInput({ name: '', amountOfMoney: null });
-        setIconSelect({ id: 1, icon: 'https://static.moneylover.me/img/icon/icon.png' });
-        setCurrencySelect(null);
-        setIsValid(false)
-      })
+      let wallet = res.data.newWallet;
+      let walletRole = res.data.walletRole;
+      wallet = { ...wallet, walletRoles: [walletRole] };
+      dispatch(getAllWallet([...allWallet, wallet]));
+      dispatch(setWalletSelect(wallet));
+      setDataInput({ name: '', amountOfMoney: null });
+      setIconSelect({ id: 1, icon: 'https://static.moneylover.me/img/icon/icon.png' });
+      setCurrencySelect(null);
+      setIsValid(false);
+      setIsLoading(false)
+      onSubmit();
     }).catch(err => console.log(err.message));
   }
   const { t } = useTranslation()
@@ -159,6 +145,12 @@ export default function NestedModal({ isOpen, onClose, onSubmit }) {
             <button type='button' onClick={handleSubmit} className='bg-lightgreen text-white text-sm font-medium py-2 px-8 uppercase rounded disabled:bg-slate-400' disabled={!isValid || !checkName || !checkMoney}>Save</button>
           </div>
         </Box>
+        <PacmanLoader
+                    size={35}
+                    loading={isLoading}
+                    aria-label="Loading Spinner"
+                    color="#2db84c"
+                />
       </Modal>
     </div>
   );
