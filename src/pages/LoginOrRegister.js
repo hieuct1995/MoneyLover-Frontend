@@ -111,21 +111,20 @@ export default function LoginOrRegister({ props }) {
                         dispatch(loginSuccess(userLogin));
 
                         // Gọi API gửi mail report
-                        loadingModal.close(); // Đóng modal loading
-                        Swal.fire({
-                            title: 'Đăng nhập thành công',
-                            icon: 'success',
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(() => {
-                            UserService.sendReport(userLogin.id, token).then(() => {
+                        UserService.sendReport(userLogin.id, token).then(() => {
+                            loadingModal.close(); // Đóng modal loading
+                            Swal.fire({
+                                title: 'Đăng nhập thành công',
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 1000
+                            }).then(() => {
                                 WalletService.getAllWallet(token).then(res => {
                                     let walletList = res.data.walletList;
                                     dispatch(getAllWallet(walletList));
                                     if (walletList.length > 0) {
                                         dispatch(setWalletSelect(walletList[0]));
                                         navigate('/');
-
                                     } else {
                                         navigate('/my-wallets');
                                     }
@@ -148,6 +147,25 @@ export default function LoginOrRegister({ props }) {
                     console.log(err.message);
                 });
             }
+            else {
+                //Register
+                dispatch(registerStart());
+                UserService.createUser(values).then((res) => {
+                    console.log(res.data)
+                    let newUser = res.data.newUser;
+                    if (newUser && res.data.message === "Creat user success. Please check your email register for verify!") {
+                        dispatch(registerSuccess())
+                        setIsLogin(true);
+                        navigate("/login");
+                    } else {
+                        setCheckValidRegister(false);
+                        dispatch(registerFailed());
+                    }
+                }).catch(err => {
+                    console.log(err.message)
+                })
+            }
+            formik.resetForm()
         }
 
     });
