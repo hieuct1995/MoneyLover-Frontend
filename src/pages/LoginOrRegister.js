@@ -1,9 +1,9 @@
-import {useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
-import {useFormik} from "formik";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
 import * as Yup from 'yup';
-import {UserService} from "../services/user.service";
-import {useDispatch} from "react-redux";
+import { UserService } from "../services/user.service";
+import { useDispatch } from "react-redux";
 import {
     loginFailed,
     loginStart,
@@ -12,8 +12,8 @@ import {
     registerStart,
     registerSuccess
 } from "../redux/authSlice";
-import {WalletService} from "../services/wallet.service";
-import {getAllWallet, getMessage, setSocket, setWalletSelect} from "../redux/walletSlice";
+import { WalletService } from "../services/wallet.service";
+import { getAllWallet, getMessage, setSocket, setWalletSelect } from "../redux/walletSlice";
 import * as React from "react";
 import Swal from "sweetalert2";
 
@@ -26,14 +26,14 @@ export const validateInput = Yup.object({
         .max(8, 'Password is too long! Please use at most 8 characters.')
 })
 
-export default function LoginOrRegister({props}) {
+export default function LoginOrRegister({ props }) {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(props);
     const [checkValidUser, setCheckValidUser] = useState(true);
     const [checkValidRegister, setCheckValidRegister] = useState(true);
     const dispatch = useDispatch()
     const formik = useFormik({
-        initialValues: {email: '', password: ''},
+        initialValues: { email: '', password: '' },
         validationSchema: validateInput,
         // onSubmit: values => {
         //     if (isLogin) {
@@ -99,7 +99,7 @@ export default function LoginOrRegister({props}) {
                         Swal.showLoading();
                     }
                 });
-        
+
                 dispatch(loginStart());
                 UserService.checkUserLogin(values).then(res => {
                     let userLogin = res.data.user;
@@ -109,29 +109,29 @@ export default function LoginOrRegister({props}) {
                         localStorage.setItem('token', token);
                         localStorage.setItem('user', email);
                         dispatch(loginSuccess(userLogin));
-        
+
                         // Gọi API gửi mail report
-                        UserService.sendReport(userLogin.id, token).then(() => {
-                            WalletService.getAllWallet(token).then(res => {
-                                let walletList = res.data.walletList;
-                                dispatch(getAllWallet(walletList));
-                                if (walletList.length > 0) {
-                                    dispatch(setWalletSelect(walletList[0]));
-                                    loadingModal.close(); // Đóng modal loading
-                                    Swal.fire({
-                                        title: 'Đăng nhập thành công',
-                                        icon: 'success',
-                                        showConfirmButton: false,
-                                        timer: 1500
-                                    }).then(() => {
+                        loadingModal.close(); // Đóng modal loading
+                        Swal.fire({
+                            title: 'Đăng nhập thành công',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            UserService.sendReport(userLogin.id, token).then(() => {
+                                WalletService.getAllWallet(token).then(res => {
+                                    let walletList = res.data.walletList;
+                                    dispatch(getAllWallet(walletList));
+                                    if (walletList.length > 0) {
+                                        dispatch(setWalletSelect(walletList[0]));
                                         navigate('/');
-                                    });
-                                } else {
-                                    loadingModal.close(); // Đóng modal loading
-                                    navigate('/my-wallets');
-                                }
+
+                                    } else {
+                                        navigate('/my-wallets');
+                                    }
+                                });
                             });
-                        });
+                        })
                     } else {
                         loadingModal.close(); // Đóng modal loading
                         setCheckValidUser(false);
@@ -149,11 +149,11 @@ export default function LoginOrRegister({props}) {
                 });
             }
         }
-        
+
     });
 
     const handleChange = (e) => {
-        const {name} = e.target;
+        const { name } = e.target;
         formik.setFieldTouched(name, true, false);
         formik.handleChange(e);
     }
@@ -184,7 +184,7 @@ export default function LoginOrRegister({props}) {
         <>
             <div className="relative">
                 <div className="bg-darkgreen h-[312px]">
-                    <img src="../logo.png" className=" object-cover w-[230px] h-[230px] mx-auto" alt="logo"/>
+                    <img src="../logo.png" className=" object-cover w-[230px] h-[230px] mx-auto" alt="logo" />
                 </div>
                 <div className="absolute top-[70%] left-1/2 transform -translate-x-1/2">
                     <div id="wrapper" className="shadow-md bg-white rounded-[20px] px-10 pt-[34px] pb-10">
@@ -226,25 +226,25 @@ export default function LoginOrRegister({props}) {
                                 <form method="post" className="border-l-2 border-slate-500 mb-4 pl-[14px]" onSubmit={formik.handleSubmit}>
                                     <div className="mb-[18px]">
                                         <input onChange={handleChange} type="email" name="email"
-                                               value={formik.values.email} placeholder="Email"
-                                               className="min-w-[275px] p-4 w-full py-[10px] bg-neutral-100 rounded-lg focus:outline-green-400"
-                                               required/>
+                                            value={formik.values.email} placeholder="Email"
+                                            className="min-w-[275px] p-4 w-full py-[10px] bg-neutral-100 rounded-lg focus:outline-green-400"
+                                            required />
                                         {formik.touched.email && formik.errors.email ? (
                                             <p className="text-red-500 text-xs mt-3">{formik.errors.email}</p>) : null}
                                     </div>
                                     <div className="mb-[18px]">
                                         <input onChange={handleChange} type="password" placeholder="Password"
-                                               name="password" value={formik.values.password}
-                                               className="p-4 w-full py-[10px] bg-neutral-100 rounded-lg focus:outline-green-400"
-                                               required/>
+                                            name="password" value={formik.values.password}
+                                            className="p-4 w-full py-[10px] bg-neutral-100 rounded-lg focus:outline-green-400"
+                                            required />
                                         {formik.touched.password && formik.errors.password ? (
                                             <p className="text-red-500 text-xs mt-3">{formik.errors.password}</p>) : null}
                                     </div>
                                     <div className="text-right mb-4 mt-2 h-4">
-                                        {isLogin ? <span className="text-lightgreen hover:text-green-600"><Link to={'/forgot-password'}>Forgot Password?</Link></span>  : <span></span>}
+                                        {isLogin ? <span className="text-lightgreen hover:text-green-600"><Link to={'/forgot-password'}>Forgot Password?</Link></span> : <span></span>}
                                     </div>
                                     <button type="submit"
-                                            className="bg-normalgreen uppercase w-full font-semibold text-white rounded-lg py-[6px]">{isLogin ? "Log In" : "Register"}</button>
+                                        className="bg-normalgreen uppercase w-full font-semibold text-white rounded-lg py-[6px]">{isLogin ? "Log In" : "Register"}</button>
                                 </form>
                                 <div className="text-center">
                                     <span className="mr-2">{isLogin ? "Don't have" : "Have "} an account?</span>
