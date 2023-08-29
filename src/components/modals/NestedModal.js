@@ -6,8 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { WalletService } from '../../services/wallet.service';
 import { getAllWallet, setWalletSelect } from '../../redux/walletSlice';
 import CurrencyInput from 'react-currency-input-field';
-import {formatDate} from "../datePick/datePick";
-import {useTranslation} from "react-i18next";
+import { formatDate } from "../datePick/datePick";
+import { useTranslation } from "react-i18next";
+import Swal from 'sweetalert2';
 
 const style = {
   position: 'absolute',
@@ -68,21 +69,38 @@ export default function NestedModal({ isOpen, onClose, onSubmit }) {
     let iconID = iconSelect.id;
     let currencyID = currencySelect?.id;
     let amountOfMoney = dataInput.amountOfMoney;
-    let date = formatDate(new Date())
+    let date = formatDate(new Date());
+    const loadingModal = Swal.fire({
+      title: 'Đang tạo ví...',
+      icon: 'info',
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      }
+    });
     WalletService.createWallet({ name, iconID, currencyID, amountOfMoney, date }).then((res) => {
-      let wallet = res.data.newWallet;
-      let walletRole = res.data.walletRole;
-      wallet = {...wallet, walletRoles:[walletRole]};
-      dispatch(getAllWallet([...allWallet, wallet]));
-      dispatch(setWalletSelect(wallet));
-      setDataInput({ name: '', amountOfMoney: null });
-      setIconSelect({id: 1, icon: 'https://static.moneylover.me/img/icon/icon.png'});
-      setCurrencySelect(null);
-      setIsValid(false)
-      onSubmit();
+      loadingModal.close(); // Đóng modal loading
+      Swal.fire({
+        title: 'Tạo ví thành công',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1000
+      }).then(() => {
+        let wallet = res.data.newWallet;
+        let walletRole = res.data.walletRole;
+        wallet = { ...wallet, walletRoles: [walletRole] };
+        dispatch(getAllWallet([...allWallet, wallet]));
+        dispatch(setWalletSelect(wallet));
+        setDataInput({ name: '', amountOfMoney: null });
+        setIconSelect({ id: 1, icon: 'https://static.moneylover.me/img/icon/icon.png' });
+        setCurrencySelect(null);
+        setIsValid(false)
+        onSubmit();
+      })
     }).catch(err => console.log(err.message));
   }
-  const {t}=useTranslation()
+  const { t } = useTranslation()
 
   return (
     <div>

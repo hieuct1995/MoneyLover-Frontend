@@ -19,6 +19,7 @@ import ShareWallet from "../modals/ShareWallet";
 import numeral from 'numeral';
 import { useTranslation } from "react-i18next";
 
+
 export default function CardWallet() {
     const { t } = useTranslation()
     const dispatch = useDispatch();
@@ -168,7 +169,6 @@ export default function CardWallet() {
                             </Card>
                         </Grid>
                         {walletSelect && checked && <Slide direction="left" in={checked} mountOnEnter unmountOnExit>
-
                             < Grid item xs={8}>
                                 <Card variant="outlined">
                                     <Box sx={{

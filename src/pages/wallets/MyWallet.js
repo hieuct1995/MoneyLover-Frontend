@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 export default function MyWallet() {
     const [showModal, setShowModal] = useState(false);
     let allWallet = useSelector(state => state.wallet.allWallet);
-    let loginSuccess = useSelector(state => state.auth.login.success);
     useEffect(() => {
         setShowModal(allWallet.length === 0);
     }, [allWallet]);
@@ -20,21 +19,13 @@ export default function MyWallet() {
     }
     return (
         <>
-            {loginSuccess ? <div className="bg-zinc-200 h-screen">
-                {showModal &&
-                    <>
-                        <NavbarMyWallet />
-                        <NestedModal is isOpen={showModal} onClose={handleCloseModal} onSubmit={handleSubmitModal} />
-                    </>
-                }
-                {!showModal && <CardWallet />}
-            </div>
-                :
-                <div>
-                    loading
-                </div>
+            {showModal &&
+                <>
+                    <NavbarMyWallet />
+                    <NestedModal is isOpen={showModal} onClose={handleCloseModal} onSubmit={handleSubmitModal} />
+                </>
             }
-
+            {!showModal && <CardWallet />}
         </>
     );
 }

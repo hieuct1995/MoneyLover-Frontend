@@ -14,7 +14,7 @@ const override = {
     left: "50%",
     top: "50%",
     transform: 'translate(-50%, -50%)',
-  };
+};
 
 export default function HomePage() {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -58,13 +58,13 @@ export default function HomePage() {
                     </div>
                 </>
                 :
-            <PacmanLoader
-                size={50}
-                loading={isLoading}
-                cssOverride={override}
-                aria-label="Loading Spinner"
-                color="#2db84c"
-            />
+                <PacmanLoader
+                    size={75}
+                    loading={isLoading}
+                    cssOverride={override}
+                    aria-label="Loading Spinner"
+                    color="#2db84c"
+                />
             }
         </>
     )
