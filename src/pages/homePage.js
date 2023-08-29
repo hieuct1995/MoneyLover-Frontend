@@ -54,6 +54,7 @@ export default function HomePage() {
                 :
             <PacmanLoader
                 size={25}
+                loading={isLoading}
                 aria-label="Loading Spinner"
                 color="#36d7b7"
             />
