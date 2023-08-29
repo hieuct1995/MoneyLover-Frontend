@@ -15,6 +15,7 @@ import {
 import {WalletService} from "../services/wallet.service";
 import {getAllWallet, getMessage, setSocket, setWalletSelect} from "../redux/walletSlice";
 import * as React from "react";
+import { showSuccessAlert } from "../components/alert/AlertModal";
 
 
 export const validateInput = Yup.object({
@@ -40,7 +41,7 @@ export default function LoginOrRegister({props}) {
                 dispatch(loginStart())
                 UserService.checkUserLogin(values).then(res => {
                         let userLogin = res.data.user;
-                    console.log(userLogin)
+                        showSuccessAlert(userLogin);
                         const email = userLogin?.email;
                         if (userLogin && res.data.message === 'Login success!') {
                             const token = res.data.token;
