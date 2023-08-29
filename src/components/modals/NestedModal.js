@@ -144,13 +144,13 @@ export default function NestedModal({ isOpen, onClose, onSubmit }) {
           <div className='py-[14px] px-6 flex justify-end'>
             <button type='button' onClick={handleSubmit} className='bg-lightgreen text-white text-sm font-medium py-2 px-8 uppercase rounded disabled:bg-slate-400' disabled={!isValid || !checkName || !checkMoney}>Save</button>
           </div>
-        </Box>
-        <PacmanLoader
+          <PacmanLoader
                     size={35}
                     loading={isLoading}
                     aria-label="Loading Spinner"
                     color="#2db84c"
                 />
+        </Box>
       </Modal>
     </div>
   );
