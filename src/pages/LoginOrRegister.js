@@ -42,7 +42,7 @@ export default function LoginOrRegister({props}) {
                 dispatch(loginStart())
                 Swal.fire({
                     title: 'Logging in...',
-                    showLoaderOnConfirm: true,
+                    showLoaderOnConfirm: false,
                     allowOutsideClick: false, // Prevent dismissing the modal
                     preConfirm: () => {
                         setLoading(true); // Show loading indicator
