@@ -23,6 +23,9 @@ export default function HomePage() {
         try {
             setIsLoading(true);
             WalletService.getAllWallet().then(res => {
+                console.log('====================================');
+                console.log(123);
+                console.log('====================================');
                 let walletList = res.data.walletList;
                 dispatch(setAllWallet(walletList));
                 if (walletList.length > 0) {
@@ -60,7 +63,7 @@ export default function HomePage() {
                 loading={isLoading}
                 cssOverride={override}
                 aria-label="Loading Spinner"
-                color="#36d7b7"
+                color="#2db84c"
             />
             }
         </>
