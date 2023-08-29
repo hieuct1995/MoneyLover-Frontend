@@ -35,7 +35,6 @@ export class UserService {
         return await axios.post(`https://moneylover-backend-production.up.railway.app/api/reset-password`, data)
     }
     static async sendReport (userID, token){
-        console.log(123)
         return await axios.get(`https://moneylover-backend-production.up.railway.app/api/users/${userID}/send-report`,
             {
                 headers: {

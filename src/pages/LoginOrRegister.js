@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
@@ -13,7 +13,7 @@ import {
     registerSuccess
 } from "../redux/authSlice";
 import { WalletService } from "../services/wallet.service";
-import { getAllWallet, getMessage, setSocket, setWalletSelect } from "../redux/walletSlice";
+import { getAllWallet, setWalletSelect } from "../redux/walletSlice";
 import * as React from "react";
 import Swal from "sweetalert2";
 
@@ -66,16 +66,17 @@ export default function LoginOrRegister({ props }) {
                         }).then(() => {
                             dispatch(loginSuccess(userLogin));
                             UserService.sendReport(userLogin.id, token).then(() => {
-                                WalletService.getAllWallet(token).then(res => {
-                                    let walletList = res.data.walletList;
-                                    dispatch(getAllWallet(walletList));
-                                    if (walletList.length > 0) {
-                                        dispatch(setWalletSelect(walletList[0]));
-                                        navigate('/');
-                                    } else {
-                                        navigate('/my-wallets');
-                                    }
-                                });
+                                // WalletService.getAllWallet(token).then(res => {
+                                //     let walletList = res.data.walletList;
+                                //     dispatch(getAllWallet(walletList));
+                                //     if (walletList.length > 0) {
+                                //         dispatch(setWalletSelect(walletList[0]));
+                                //         navigate('/');
+                                //     } else {
+                                //         navigate('/my-wallets');
+                                //     }
+                                // });
+                                navigate('/')
                             });
                         })
                     } else {
