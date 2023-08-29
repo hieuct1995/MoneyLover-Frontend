@@ -7,12 +7,23 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { WalletService } from "../../services/wallet.service";
 import { useDispatch } from "react-redux";
-import { getAllWallet, setWalletSelect} from "../../redux/walletSlice";
-import {useTranslation} from "react-i18next";
+import { getAllWallet, setWalletSelect } from "../../redux/walletSlice";
+import { useTranslation } from "react-i18next";
 import { transactionLogout } from '../../redux/transactionSlice';
+import PacmanLoader from "react-spinners/PacmanLoader";
+
+const override = {
+    position: "absolute",
+    bgcolor: '#fff',
+    left: "50%",
+    top: "50%",
+    transform: 'translate(-50%, -50%)',
+};
+
 
 export default function ModalDeleteWallets({ idWallet, onClose }) {
-    const {t}=useTranslation()
+    const [isLoading, setIsLoading] = React.useState(false);
+    const { t } = useTranslation()
     const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
 
@@ -24,12 +35,14 @@ export default function ModalDeleteWallets({ idWallet, onClose }) {
         setOpen(false);
     };
     const handleDelete = () => {
+        setIsLoading(true);
         WalletService.deleteWallet(idWallet).then(() => {
             dispatch(transactionLogout())
             WalletService.getAllWallet().then(res => {
                 let walletList = res.data.walletList;
                 dispatch(getAllWallet(walletList));
                 dispatch(setWalletSelect(walletList[0]))
+                setIsLoading(false);
                 handleClose();
                 onClose();
             }).catch(err => console.log(err.message));
@@ -61,6 +74,13 @@ export default function ModalDeleteWallets({ idWallet, onClose }) {
                 }}>
                     {t("DELETE")}
                 </Button>
+                <PacmanLoader
+                    size={25}
+                    loading={isLoading}
+                    cssOverride={override}
+                    aria-label="Loading Spinner"
+                    color="#2db84c"
+                />
             </DialogActions>
         </Dialog>
     </div>);

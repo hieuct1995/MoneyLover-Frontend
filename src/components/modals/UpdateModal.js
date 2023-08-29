@@ -5,9 +5,10 @@ import IconModal from './IconModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { WalletService } from '../../services/wallet.service';
 import { getAllWallet, setWalletSelect } from '../../redux/walletSlice';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import CurrencyInput from 'react-currency-input-field';
-import {formatDate} from "../datePick/datePick";
+import { formatDate } from "../datePick/datePick";
+import PacmanLoader from 'react-spinners/PacmanLoader';
 
 const style = {
     position: 'absolute',
@@ -21,7 +22,8 @@ const style = {
 };
 
 export default function UpdateModal({ isOpen, onClose, onSubmit }) {
-    const {t}=useTranslation()
+    const [isLoading, setIsLoading] = React.useState(false);
+    const { t } = useTranslation()
     const [isValid, setIsValid] = React.useState(false);
     const walletSelect = useSelector(state => state.wallet.walletSelect);
     const allWallet = useSelector(state => state.wallet.allWallet);
@@ -75,6 +77,7 @@ export default function UpdateModal({ isOpen, onClose, onSubmit }) {
     }, [dataInput])
 
     const handleSubmit = () => {
+        setIsLoading(true);
         let name = dataInput.name;
         let iconID = iconSelect?.id;
         let currencyID = currencySelect?.id;
@@ -86,6 +89,7 @@ export default function UpdateModal({ isOpen, onClose, onSubmit }) {
             WalletService.getAllWallet().then(res => {
                 let walletList = res.data.walletList;
                 dispatch(getAllWallet(walletList));
+                setIsLoading(false)
                 onSubmit();
             })
         }).catch(err => console.log(err.message));
@@ -149,6 +153,15 @@ export default function UpdateModal({ isOpen, onClose, onSubmit }) {
                             </div>
                         </div>
                     </div>
+                    {isLoading && <div className='flex justify-center'>
+                        <PacmanLoader
+                            size={25}
+                            loading={isLoading}
+                            aria-label="Loading Spinner"
+                            color="#2db84c"
+                        />
+                    </div>
+                    }
                     <div className='py-[14px] px-6 flex justify-end'>
                         <button type='button' onClick={handleCancel} className='bg-slate-400 text-white text-sm font-medium py-2 px-8 uppercase rounded mr-3'>{t("Cancel")}</button>
                         <button type='button' onClick={handleSubmit} className='bg-lightgreen hover:opacity-80 text-white text-sm font-medium py-2 px-8 uppercase rounded disabled:bg-slate-400' disabled={!isValid || !checkName || !checkMoney}>{t("Save")}</button>
