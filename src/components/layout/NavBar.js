@@ -21,7 +21,6 @@ export default function NavBar({ onClickAddBtn }) {
         }
     };
     useEffect(() => {
-        console.log(language);
         if (language === "Vi") {
             dispatch(setLanguage("Vi"))
             localStorage.setItem('lang', language)
