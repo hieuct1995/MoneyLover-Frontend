@@ -143,57 +143,54 @@ export default function CardWallet() {
                 <Box sx={{ margin: " 50px auto" }}>
                     <Grid container justifyContent="center" spacing={2}>
                         <Grid item xs={4}>
-                            <div className='flex justify-center'>
-                                <Card sx={{ maxWidth: 578 }} variant="outlined">
-                                    <Box sx={{
-                                        position: 'relative',
-                                        backgroundColor: "#f4f4f4",
-                                        color: "black",
-                                        height: "40px",
-                                    }}>
-                                        <p style={{ padding: "5px 10px" }}>{t("excludedFromTotal")}</p>
-                                    </Box>
-                                    <>
-                                        {allWallet?.length > 0 && allWallet?.map(wallet => (
-                                            <div key={wallet.id}>
-                                                <Button onClick={() => handleOpenSlide(wallet.id)} variant="outlined"
-                                                    fullWidth color="success"
-                                                    sx={{ color: "black", paddingX: 0 }}>
-                                                    <div className='w-full flex justify-between'>
-                                                        <div className='flex items-center gap-4 ml-4 py-4'>
-                                                            <img src={wallet.icon.icon}
-                                                                className='w-10 h-10'
-                                                                alt="" />
-                                                            <div className='text-start'>
-                                                                <span className='lowercase'>{wallet.name}</span><br />
-                                                                <span>{numeral(wallet.amountOfMoney).format(0.0)} </span>
-                                                                <span className='lowercase'>{wallet.currency.sign} </span>
-                                                            </div>
-                                                        </div>
-                                                        <div>
-                                                            <span className={` lowercase text-white text-xs px-1 py-1 font-semibold rounded-sm mt-1 mr-2 ${wallet?.walletRoles[0].role === 'owner' ? 'bg-orange-400' : `${wallet?.walletRoles[0].role === 'using' ? 'bg-lightgreen' : 'bg-sky-400'}`}`}>{wallet?.walletRoles[0].role}</span>
+                            <Card sx={{ maxWidth: 578 }} variant="outlined">
+                                <Box sx={{
+                                    position: 'relative',
+                                    backgroundColor: "#f4f4f4",
+                                    color: "black",
+                                    height: "40px",
+                                }}>
+                                    <p style={{ padding: "5px 10px" }}>{t("excludedFromTotal")}</p>
+                                </Box>
+                                <>
+                                    {allWallet?.length > 0 && allWallet?.map(wallet => (
+                                        <div key={wallet.id}>
+                                            <Button onClick={() => handleOpenSlide(wallet.id)} variant="outlined"
+                                                fullWidth color="success"
+                                                sx={{ color: "black", paddingX: 0 }}>
+                                                <div className='w-full flex justify-between'>
+                                                    <div className='flex items-center gap-4 ml-4 py-4'>
+                                                        <img src={wallet.icon.icon}
+                                                            className='w-10 h-10'
+                                                            alt="" />
+                                                        <div className='text-start'>
+                                                            <span className='lowercase'>{wallet.name}</span><br />
+                                                            <span>{numeral(wallet.amountOfMoney).format(0.0)} </span>
+                                                            <span className='lowercase'>{wallet.currency.sign} </span>
                                                         </div>
                                                     </div>
-                                                </Button>
-                                            </div>
-                                        ))}
-                                    </>
-                                </Card>
-                                {isLoading &&
-                                    <div className='flex items-center w-full justify-center'>
-                                        <ClipLoader
-                                            size={35}
-                                            loading={isLoading}
-                                            // cssOverride={override}
-                                            aria-label="Loading Spinner"
-                                            color="#2db84c"
-                                        />
-                                    </div>
-                                }
-                            </div>
-
+                                                    <div>
+                                                        <span className={` lowercase text-white text-xs px-1 py-1 font-semibold rounded-sm mt-1 mr-2 ${wallet?.walletRoles[0].role === 'owner' ? 'bg-orange-400' : `${wallet?.walletRoles[0].role === 'using' ? 'bg-lightgreen' : 'bg-sky-400'}`}`}>{wallet?.walletRoles[0].role}</span>
+                                                    </div>
+                                                </div>
+                                            </Button>
+                                        </div>
+                                    ))}
+                                </>
+                            </Card>
                         </Grid>
-
+                        {isLoading && <Grid item xs={8}>
+                            <div className='flex items-center w-full justify-center'>
+                                <ClipLoader
+                                    size={35}
+                                    loading={isLoading}
+                                    // cssOverride={override}
+                                    aria-label="Loading Spinner"
+                                    color="#2db84c"
+                                />
+                            </div>
+                        </Grid>
+                        }
                         {walletSelect && checked && <Slide direction="left" in={checked} mountOnEnter unmountOnExit>
                             < Grid item xs={8}>
                                 <Card variant="outlined">
