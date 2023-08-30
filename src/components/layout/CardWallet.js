@@ -30,6 +30,8 @@ const override = {
 
 export default function CardWallet() {
     const [isLoading, setIsLoading] = React.useState(false);
+    const [isLoadingArchived, setIsLoadingArchived] = React.useState(false);
+    const [isLoadingLeave, setIsLoadingLeave] = React.useState(false);
     const { t } = useTranslation()
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -88,7 +90,9 @@ export default function CardWallet() {
         setChecked(true);
     }
     const handleCheckboxChange = () => {
+        setIsLoadingArchived(true);
         WalletService.archivedWallet(walletSelect.id).then(() => {
+            setIsLoadingArchived(false);
             handleOpenSlide(walletSelect?.id)
         })
     };
@@ -104,9 +108,11 @@ export default function CardWallet() {
         setChecked(true);
     }
     const handleLeave = () => {
+        setIsLoadingLeave(true);
         WalletService.leaveWallet(walletSelect?.walletRoles[0].id, '').then(res => {
             if (res.data.message === 'Leave wallet success!') {
                 WalletService.getAllWallet().then(res => {
+                    setIsLoadingLeave(false);
                     dispatch(getAllWallet(res.data.walletList))
                 })
             }
@@ -225,35 +231,44 @@ export default function CardWallet() {
                                                 }
                                             </Stack>
                                         </div>
-                                    </Box>
-                                    <div
-                                        style={{ color: "black", justifyContent: "left", textAlign: "left" }}>
-                                        <div>
-                                            <img src={walletSelect?.icon.icon} className='w-12 h-12 float-left mx-4' alt="" />
-                                            <div style={{ textAlign: "left", margin: "15px" }}>
-                                                <span className='lowercase'>{walletSelect?.name}</span><br />
-                                                <span>{numeral(walletSelect?.amountOfMoney).format(0, 0)} </span>
-                                                <span className='lowercase'>{walletSelect?.currency.sign} </span>
-                                            </div>
+                                        {isLoadingLeave &&
+                                            <ClipLoader
+                                                size={35}
+                                                loading={isLoadingLeave}
+                                                cssOverride={override}
+                                                aria-label="Loading Spinner"
+                                                color="#2db84c"
+                                            />
+                                        }
+                                </Box>
+                                <div
+                                    style={{ color: "black", justifyContent: "left", textAlign: "left" }}>
+                                    <div>
+                                        <img src={walletSelect?.icon.icon} className='w-12 h-12 float-left mx-4' alt="" />
+                                        <div style={{ textAlign: "left", margin: "15px" }}>
+                                            <span className='lowercase'>{walletSelect?.name}</span><br />
+                                            <span>{numeral(walletSelect?.amountOfMoney).format(0, 0)} </span>
+                                            <span className='lowercase'>{walletSelect?.currency.sign} </span>
                                         </div>
                                     </div>
-                                    <div className='border-t px-16 pt-2 pb-4'>
-                                        <p className='pb-2 font-medium text-graynew'>{t("User Account")}</p>
-                                        <div className=''>
-                                            {allUsersOfTheWallet?.length > 0 && allUsersOfTheWallet.map(item => (
-                                                <div key={item.id} className='flex gap-3 py-2'>
-                                                    <img className='w-12 h-12' src="https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=" alt="ảnh" />
-                                                    <div>
-                                                        <div className='flex gap-3 mb-1'>
-                                                            <span className='font-semibold'>{item.email}</span>
-                                                            <span className={` text-white text-xs px-1 font-semibold rounded-sm mt-1 ${item.role === 'owner' ? 'bg-orange-400' : `${item.role === 'using' ? 'bg-lightgreen' : 'bg-sky-400'}`}`}>{item.role}</span>
-                                                        </div>
-                                                        <p className='text-xs text-graynew'>{item.email}</p>
+                                </div>
+                                <div className='border-t px-16 pt-2 pb-4'>
+                                    <p className='pb-2 font-medium text-graynew'>{t("User Account")}</p>
+                                    <div className=''>
+                                        {allUsersOfTheWallet?.length > 0 && allUsersOfTheWallet.map(item => (
+                                            <div key={item.id} className='flex gap-3 py-2'>
+                                                <img className='w-12 h-12' src="https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=" alt="ảnh" />
+                                                <div>
+                                                    <div className='flex gap-3 mb-1'>
+                                                        <span className='font-semibold'>{item.email}</span>
+                                                        <span className={` text-white text-xs px-1 font-semibold rounded-sm mt-1 ${item.role === 'owner' ? 'bg-orange-400' : `${item.role === 'using' ? 'bg-lightgreen' : 'bg-sky-400'}`}`}>{item.role}</span>
                                                     </div>
+                                                    <p className='text-xs text-graynew'>{item.email}</p>
                                                 </div>
-                                            ))}
+                                            </div>
+                                        ))}
 
-                                            {/* 
+                                        {/* 
                                                 <>
                                                     {messageUser?.walletInfo.id === walletSelect?.id ?
                                                         <div className='flex gap-3 py-2'>
@@ -271,57 +286,34 @@ export default function CardWallet() {
                                                 }
                                                 </> */}
 
-                                        </div>
                                     </div>
-                                    {walletSelect?.walletRoles && walletSelect?.walletRoles[0].role !== 'viewer' ?
-                                        <>
-                                            {walletSelect?.walletRoles[0].role === 'owner' ?
-                                                <>
-                                                    {walletSelect?.walletRoles[0].archived === false ? (<>
-                                                        <Button sx={{ borderTop: "1px solid #ececec", color: "green" }}
-                                                            fullWidth
-                                                            onClick={handleCheckboxChange}>
-                                                            <Grid item xs={12}>
-                                                                <b>{t("archived")}</b>
-                                                            </Grid>
-                                                        </Button>
-                                                        <Button disabled={(walletSelect?.amountOfMoney <= 0) || (allWallet?.length <= 1)} onClick={handleOpenFormTranfer}
-                                                            fullWidth
-                                                            sx={{ borderTop: "1px solid #ececec", color: "green" }}>
-                                                            <Grid item xs={12}>
-                                                                <b>{t("transferMoney")}</b>
-                                                            </Grid>
-                                                        </Button>
-                                                        <Button fullWidth sx={{ borderTop: "1px solid #ececec", color: "green" }} onClick={handleOpenShare}>
-                                                            <Grid item xs={12}>
-                                                                <b>{t("shareWallet")}</b>
-                                                            </Grid>
-                                                        </Button>
-                                                    </>) : (
-                                                        <>
-                                                            <Button sx={{ borderTop: "1px solid #ececec", color: "green" }}
-                                                                fullWidth
-                                                                onClick={handleCheckboxChange}>
-                                                                <Grid item xs={12}>
-                                                                    <b>{t("unarchived")}</b>
-                                                                </Grid>
-                                                            </Button>
-                                                        </>
-                                                    )}
-                                                </>
-                                                :
-                                                <>
-                                                    {walletSelect?.walletRoles[0].archived === false ?
-
-                                                        <Button sx={{ borderTop: "1px solid #ececec", color: "green" }}
-                                                            fullWidth
-                                                            onClick={handleCheckboxChange}>
-                                                            <Grid item xs={12}>
-                                                                <b>{t("archived")}</b>
-                                                            </Grid>
-                                                        </Button>
-
-                                                        :
+                                </div>
+                                {walletSelect?.walletRoles && walletSelect?.walletRoles[0].role !== 'viewer' ?
+                                    <>
+                                        {walletSelect?.walletRoles[0].role === 'owner' ?
+                                            <>
+                                                {walletSelect?.walletRoles[0].archived === false ? (<>
+                                                    <Button sx={{ borderTop: "1px solid #ececec", color: "green" }}
+                                                        fullWidth
+                                                        onClick={handleCheckboxChange}>
+                                                        <Grid item xs={12}>
+                                                            <b>{t("archived")}</b>
+                                                        </Grid>
+                                                    </Button>
+                                                    <Button disabled={(walletSelect?.amountOfMoney <= 0) || (allWallet?.length <= 1)} onClick={handleOpenFormTranfer}
+                                                        fullWidth
+                                                        sx={{ borderTop: "1px solid #ececec", color: "green" }}>
+                                                        <Grid item xs={12}>
+                                                            <b>{t("transferMoney")}</b>
+                                                        </Grid>
+                                                    </Button>
+                                                    <Button fullWidth sx={{ borderTop: "1px solid #ececec", color: "green" }} onClick={handleOpenShare}>
+                                                        <Grid item xs={12}>
+                                                            <b>{t("shareWallet")}</b>
+                                                        </Grid>
+                                                    </Button>
+                                                </>) : (
+                                                    <>
                                                         <Button sx={{ borderTop: "1px solid #ececec", color: "green" }}
                                                             fullWidth
                                                             onClick={handleCheckboxChange}>
@@ -329,27 +321,58 @@ export default function CardWallet() {
                                                                 <b>{t("unarchived")}</b>
                                                             </Grid>
                                                         </Button>
-                                                    }
-                                                </>
-                                            }
-                                        </>
-                                        :
-                                        null
-                                    }
+                                                    </>
+                                                )}
+                                            </>
+                                            :
+                                            <>
+                                                {walletSelect?.walletRoles[0].archived === false ?
 
-                                </Card>
-                            </Grid>
+                                                    <Button sx={{ borderTop: "1px solid #ececec", color: "green" }}
+                                                        fullWidth
+                                                        onClick={handleCheckboxChange}>
+                                                        <Grid item xs={12}>
+                                                            <b>{t("archived")}</b>
+                                                        </Grid>
+                                                    </Button>
+
+                                                    :
+                                                    <Button sx={{ borderTop: "1px solid #ececec", color: "green" }}
+                                                        fullWidth
+                                                        onClick={handleCheckboxChange}>
+                                                        <Grid item xs={12}>
+                                                            <b>{t("unarchived")}</b>
+                                                        </Grid>
+                                                    </Button>
+                                                }
+                                            </>
+                                        }
+                                    </>
+                                    :
+                                    null
+                                }
+                                {isLoadingArchived &&
+                                    <ClipLoader
+                                        size={35}
+                                        loading={isLoadingArchived}
+                                        cssOverride={override}
+                                        aria-label="Loading Spinner"
+                                        color="#2db84c"
+                                    />
+                                }
+                            </Card>
+                        </Grid>
                         </Slide>}
-                    </Grid>
-                    <UpdateModal isOpen={openFormUpdate} onClose={handleCloseFormUpdate}
-                        onSubmit={handleSubmitFormUpdate} />
-                    <NestedModal isOpen={openFormCreate} onClose={handleCloseFormCreate}
-                        onSubmit={handleSubmitFormCreate} />
-                    <TranferModal isOpen={openFormTranfer} onClose={handleCloseFormTranfer}
-                        onSubmit={handleSubmitFormTranfer} />
-                    <ShareWallet isOpen={openShareWallet} onClose={handleCloseShare} />
-                </Box>
-            </Container>
-        </Slide>
-    </div>);
+                </Grid>
+                <UpdateModal isOpen={openFormUpdate} onClose={handleCloseFormUpdate}
+                    onSubmit={handleSubmitFormUpdate} />
+                <NestedModal isOpen={openFormCreate} onClose={handleCloseFormCreate}
+                    onSubmit={handleSubmitFormCreate} />
+                <TranferModal isOpen={openFormTranfer} onClose={handleCloseFormTranfer}
+                    onSubmit={handleSubmitFormTranfer} />
+                <ShareWallet isOpen={openShareWallet} onClose={handleCloseShare} />
+            </Box>
+        </Container>
+    </Slide>
+    </div >);
 }
