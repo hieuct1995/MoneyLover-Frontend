@@ -12,8 +12,6 @@ import {
     registerStart,
     registerSuccess
 } from "../redux/authSlice";
-import { WalletService } from "../services/wallet.service";
-import { setWalletSelect } from "../redux/walletSlice";
 import * as React from "react";
 import Swal from "sweetalert2";
 
