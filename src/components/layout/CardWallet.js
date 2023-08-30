@@ -180,7 +180,7 @@ export default function CardWallet() {
                             </Card>
                         </Grid>
                         { isLoading &&
-                            <div className='flex items-center w-full justify-center'>
+                            <span className='flex items-center w-full justify-center'>
                             <ClipLoader
                                 size={35}
                                 loading={isLoading}
@@ -188,7 +188,7 @@ export default function CardWallet() {
                                 aria-label="Loading Spinner"
                                 color="#2db84c"
                             />
-                        </div>
+                        </span>
                         }
                         {walletSelect && checked && <Slide direction="left" in={checked} mountOnEnter unmountOnExit>
                             < Grid item xs={8}>
