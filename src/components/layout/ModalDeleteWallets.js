@@ -64,15 +64,13 @@ export default function ModalDeleteWallets({ idWallet, onClose }) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    <div className='flex justify-center min-h-[20px] pb-2'>
-                        <ClipLoader
-                            size={35}
-                            loading={isLoading}
-                            cssOverride={override}
-                            aria-label="Loading Spinner"
-                            color="#2db84c"
-                        />
-                    </div>
+                    <ClipLoader
+                        size={25}
+                        loading={isLoading}
+                        cssOverride={override}
+                        aria-label="Loading Spinner"
+                        color="#2db84c"
+                    />
                 </DialogContentText>
             </DialogContent>
             <div className='flex justify-center gap-4 py-2'>
