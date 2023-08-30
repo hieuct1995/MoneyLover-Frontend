@@ -42,7 +42,7 @@ export default function CardWallet() {
         }
         WalletService.getInfoWallet(idWallet).then(res => {
             console.log('====================================');
-            console.log(res.allUsersOfTheWallet);
+            console.log(res.data.allUsersOfTheWallet);
             console.log('====================================');
             dispatch(setWalletSelect(res.data.wallet));
             setAllUsersOfTheWallet(res.data.allUsersOfTheWallet);
