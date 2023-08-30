@@ -75,7 +75,7 @@ export default function ModalDeleteWallets({ idWallet, onClose }) {
                     {t("DELETE")}
                 </Button>
                 <ClipLoader
-                    size={25}
+                    size={35}
                     loading={isLoading}
                     cssOverride={override}
                     aria-label="Loading Spinner"
