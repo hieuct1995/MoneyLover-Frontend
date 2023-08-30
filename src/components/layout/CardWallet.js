@@ -18,18 +18,8 @@ import TranferModal from '../modals/TranferModal';
 import ShareWallet from "../modals/ShareWallet";
 import numeral from 'numeral';
 import { useTranslation } from "react-i18next";
-import ClipLoader from 'react-spinners/ClipLoader';
-
-// const override = {
-//     position: "absolute",
-//     bgcolor: '#fff',
-//     left: "50%",
-//     top: "50%",
-//     transform: 'translate(-50%, -50%)',
-// };
 
 export default function CardWallet() {
-    const [isLoading, setIsLoading] = React.useState(false);
     const { t } = useTranslation()
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -43,16 +33,19 @@ export default function CardWallet() {
     const walletSelect = useSelector(state => state.wallet.walletSelect);
 
     const handleOpenSlide = (idWallet) => {
-        let wallet = allWallet.find(wallet => wallet.id === idWallet)
+        let wallet = allWallet.find(wallet => wallet.id === idWallet);
         console.log('====================================');
         console.log(wallet);
         console.log('====================================');
-        setIsLoading(true);
+        // if (wallet) {
+        //     dispatch(setWalletSelect(wallet));
+        //     setChecked(true);
+        // }
+        
         WalletService.getInfoWallet(idWallet).then(res => {
             dispatch(setWalletSelect(res.data.wallet));
             setAllUsersOfTheWallet(res.data.allUsersOfTheWallet);
-            setIsLoading(false);
-            setChecked(true);
+            setChecked(true)
         });
     };
 
@@ -183,17 +176,6 @@ export default function CardWallet() {
                                 </>
                             </Card>
                         </Grid>
-                        { isLoading &&
-                            <span className='flex items-center w-full justify-center'>
-                            <ClipLoader
-                                size={35}
-                                loading={isLoading}
-                                // cssOverride={override}
-                                aria-label="Loading Spinner"
-                                color="#2db84c"
-                            />
-                        </span>
-                        }
                         {walletSelect && checked && <Slide direction="left" in={checked} mountOnEnter unmountOnExit>
                             < Grid item xs={8}>
                                 <Card variant="outlined">
