@@ -43,6 +43,7 @@ export default function CardWallet() {
     const walletSelect = useSelector(state => state.wallet.walletSelect);
 
     const handleOpenSlide = (idWallet) => {
+        setChecked(false);
         setIsLoading(true);
         WalletService.getInfoWallet(idWallet).then(res => {
             dispatch(setWalletSelect(res.data.wallet));
