@@ -4,7 +4,7 @@ const initialState = {
     icons: [],
     currencies: [],
     walletSelect: null,
-    allWallet: [],
+    allWallet: null,
     socket: null,
     message: []
 }
@@ -33,7 +33,7 @@ export const walletSlice = createSlice({
         },
         walletLogout: (state) => {
             state.walletSelect = null;
-            state.allWallet = [];
+            state.allWallet = null;
         }
     }
 })
