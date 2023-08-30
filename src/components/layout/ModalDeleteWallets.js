@@ -64,7 +64,13 @@ export default function ModalDeleteWallets({ idWallet, onClose }) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    Xóa không lấy lại được đâu.
+                    <ClipLoader
+                        size={35}
+                        loading={isLoading}
+                        cssOverride={override}
+                        aria-label="Loading Spinner"
+                        color="#2db84c"
+                    />
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -74,13 +80,6 @@ export default function ModalDeleteWallets({ idWallet, onClose }) {
                 }}>
                     {t("DELETE")}
                 </Button>
-                <ClipLoader
-                    size={35}
-                    loading={isLoading}
-                    cssOverride={override}
-                    aria-label="Loading Spinner"
-                    color="#2db84c"
-                />
             </DialogActions>
         </Dialog>
     </div>);
