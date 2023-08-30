@@ -18,8 +18,18 @@ import TranferModal from '../modals/TranferModal';
 import ShareWallet from "../modals/ShareWallet";
 import numeral from 'numeral';
 import { useTranslation } from "react-i18next";
+import ClipLoader from 'react-spinners/ClipLoader';
+
+// const override = {
+//     position: "absolute",
+//     bgcolor: '#fff',
+//     left: "50%",
+//     top: "50%",
+//     transform: 'translate(-50%, -50%)',
+// };
 
 export default function CardWallet() {
+    const [isLoading, setIsLoading] = React.useState(false);
     const { t } = useTranslation()
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -33,19 +43,12 @@ export default function CardWallet() {
     const walletSelect = useSelector(state => state.wallet.walletSelect);
 
     const handleOpenSlide = (idWallet) => {
-        let wallet = allWallet.find(wallet => wallet.id === idWallet);
-        console.log('====================================');
-        console.log(wallet);
-        console.log('====================================');
-        // if (wallet) {
-        //     dispatch(setWalletSelect(wallet));
-        //     setChecked(true);
-        // }
-        
+        setIsLoading(true);
         WalletService.getInfoWallet(idWallet).then(res => {
             dispatch(setWalletSelect(res.data.wallet));
             setAllUsersOfTheWallet(res.data.allUsersOfTheWallet);
-            setChecked(true)
+            setIsLoading(false);
+            setChecked(true);
         });
     };
 
@@ -140,42 +143,57 @@ export default function CardWallet() {
                 <Box sx={{ margin: " 50px auto" }}>
                     <Grid container justifyContent="center" spacing={2}>
                         <Grid item xs={4}>
-                            <Card sx={{ maxWidth: 578 }} variant="outlined">
-                                <Box sx={{
-                                    position: 'relative',
-                                    backgroundColor: "#f4f4f4",
-                                    color: "black",
-                                    height: "40px",
-                                }}>
-                                    <p style={{ padding: "5px 10px" }}>{t("excludedFromTotal")}</p>
-                                </Box>
-                                <>
-                                    {allWallet?.length > 0 && allWallet?.map(wallet => (
-                                        <div key={wallet.id}>
-                                            <Button onClick={() => handleOpenSlide(wallet.id)} variant="outlined"
-                                                fullWidth color="success"
-                                                sx={{ color: "black", paddingX: 0 }}>
-                                                <div className='w-full flex justify-between'>
-                                                    <div className='flex items-center gap-4 ml-4 py-4'>
-                                                        <img src={wallet.icon.icon}
-                                                            className='w-10 h-10'
-                                                            alt="" />
-                                                        <div className='text-start'>
-                                                            <span className='lowercase'>{wallet.name}</span><br />
-                                                            <span>{numeral(wallet.amountOfMoney).format(0.0)} </span>
-                                                            <span className='lowercase'>{wallet.currency.sign} </span>
+                            <div className='flex justify-center'>
+                                <Card sx={{ maxWidth: 578 }} variant="outlined">
+                                    <Box sx={{
+                                        position: 'relative',
+                                        backgroundColor: "#f4f4f4",
+                                        color: "black",
+                                        height: "40px",
+                                    }}>
+                                        <p style={{ padding: "5px 10px" }}>{t("excludedFromTotal")}</p>
+                                    </Box>
+                                    <>
+                                        {allWallet?.length > 0 && allWallet?.map(wallet => (
+                                            <div key={wallet.id}>
+                                                <Button onClick={() => handleOpenSlide(wallet.id)} variant="outlined"
+                                                    fullWidth color="success"
+                                                    sx={{ color: "black", paddingX: 0 }}>
+                                                    <div className='w-full flex justify-between'>
+                                                        <div className='flex items-center gap-4 ml-4 py-4'>
+                                                            <img src={wallet.icon.icon}
+                                                                className='w-10 h-10'
+                                                                alt="" />
+                                                            <div className='text-start'>
+                                                                <span className='lowercase'>{wallet.name}</span><br />
+                                                                <span>{numeral(wallet.amountOfMoney).format(0.0)} </span>
+                                                                <span className='lowercase'>{wallet.currency.sign} </span>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <span className={` lowercase text-white text-xs px-1 py-1 font-semibold rounded-sm mt-1 mr-2 ${wallet?.walletRoles[0].role === 'owner' ? 'bg-orange-400' : `${wallet?.walletRoles[0].role === 'using' ? 'bg-lightgreen' : 'bg-sky-400'}`}`}>{wallet?.walletRoles[0].role}</span>
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        <span className={` lowercase text-white text-xs px-1 py-1 font-semibold rounded-sm mt-1 mr-2 ${wallet?.walletRoles[0].role === 'owner' ? 'bg-orange-400' : `${wallet?.walletRoles[0].role === 'using' ? 'bg-lightgreen' : 'bg-sky-400'}`}`}>{wallet?.walletRoles[0].role}</span>
-                                                    </div>
-                                                </div>
-                                            </Button>
-                                        </div>
-                                    ))}
-                                </>
-                            </Card>
+                                                </Button>
+                                            </div>
+                                        ))}
+                                    </>
+                                </Card>
+                                {isLoading &&
+                                    <div className='flex items-center w-full justify-center'>
+                                        <ClipLoader
+                                            size={35}
+                                            loading={isLoading}
+                                            // cssOverride={override}
+                                            aria-label="Loading Spinner"
+                                            color="#2db84c"
+                                        />
+                                    </div>
+                                }
+                            </div>
+
                         </Grid>
+
                         {walletSelect && checked && <Slide direction="left" in={checked} mountOnEnter unmountOnExit>
                             < Grid item xs={8}>
                                 <Card variant="outlined">
