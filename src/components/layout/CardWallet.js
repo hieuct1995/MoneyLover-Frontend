@@ -20,13 +20,13 @@ import numeral from 'numeral';
 import { useTranslation } from "react-i18next";
 import ClipLoader from 'react-spinners/ClipLoader';
 
-// const override = {
-//     position: "absolute",
-//     bgcolor: '#fff',
-//     left: "50%",
-//     top: "50%",
-//     transform: 'translate(-50%, -50%)',
-// };
+const override = {
+    position: "absolute",
+    bgcolor: '#fff',
+    left: "50%",
+    top: "50%",
+    transform: 'translate(-50%, -50%)',
+};
 
 export default function CardWallet() {
     const [isLoading, setIsLoading] = React.useState(false);
@@ -180,11 +180,11 @@ export default function CardWallet() {
                             </Card>
                         </Grid>
                         {isLoading && <Grid item xs={8}>
-                            <div className='flex items-center w-full justify-center'>
+                            <div className='relative w-full h-full'>
                                 <ClipLoader
                                     size={35}
                                     loading={isLoading}
-                                    // cssOverride={override}
+                                    cssOverride={override}
                                     aria-label="Loading Spinner"
                                     color="#2db84c"
                                 />
