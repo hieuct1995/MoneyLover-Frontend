@@ -297,15 +297,17 @@ export default function CardWallet() {
                                                             fullWidth
                                                             onClick={handleCheckboxChange}>
                                                             <Grid item xs={12}>
-                                                                {isLoadingArchived &&
-                                                                    <ClipLoader
-                                                                        size={25}
-                                                                        loading={isLoadingArchived}
-                                                                        aria-label="Loading Spinner"
-                                                                        color="#2db84c"
-                                                                    />
-                                                                }
-                                                                <b>{t("archived")}</b>
+                                                                <div className='relative'>
+                                                                    {isLoadingArchived &&
+                                                                        <ClipLoader
+                                                                            size={25}
+                                                                            loading={isLoadingArchived}
+                                                                            aria-label="Loading Spinner"
+                                                                            color="#2db84c"
+                                                                        />
+                                                                    }
+                                                                    <b>{t("unarchived")}</b>
+                                                                </div>
                                                             </Grid>
                                                         </Button>
                                                         <Button disabled={(walletSelect?.amountOfMoney <= 0) || (allWallet?.length <= 1)} onClick={handleOpenFormTranfer}
@@ -326,15 +328,17 @@ export default function CardWallet() {
                                                                 fullWidth
                                                                 onClick={handleCheckboxChange}>
                                                                 <Grid item xs={12}>
-                                                                    {isLoadingArchived &&
-                                                                        <ClipLoader
-                                                                            size={25}
-                                                                            loading={isLoadingArchived}
-                                                                            aria-label="Loading Spinner"
-                                                                            color="#2db84c"
-                                                                        />
-                                                                    }
-                                                                    <b>{t("unarchived")}</b>
+                                                                    <div className='relative'>
+                                                                        {isLoadingArchived &&
+                                                                            <ClipLoader
+                                                                                size={25}
+                                                                                loading={isLoadingArchived}
+                                                                                aria-label="Loading Spinner"
+                                                                                color="#2db84c"
+                                                                            />
+                                                                        }
+                                                                        <b>{t("unarchived")}</b>
+                                                                    </div>
                                                                 </Grid>
                                                             </Button>
                                                         </>
@@ -348,15 +352,17 @@ export default function CardWallet() {
                                                             fullWidth
                                                             onClick={handleCheckboxChange}>
                                                             <Grid item xs={12}>
-                                                                {isLoadingArchived &&
-                                                                    <ClipLoader
-                                                                        size={25}
-                                                                        loading={isLoadingArchived}
-                                                                        aria-label="Loading Spinner"
-                                                                        color="#2db84c"
-                                                                    />
-                                                                }
-                                                                <b>{t("archived")}</b>
+                                                                <div className='relative'>
+                                                                    {isLoadingArchived &&
+                                                                        <ClipLoader
+                                                                            size={25}
+                                                                            loading={isLoadingArchived}
+                                                                            aria-label="Loading Spinner"
+                                                                            color="#2db84c"
+                                                                        />
+                                                                    }
+                                                                    <b>{t("unarchived")}</b>
+                                                                </div>
                                                             </Grid>
                                                         </Button>
 
@@ -365,15 +371,17 @@ export default function CardWallet() {
                                                             fullWidth
                                                             onClick={handleCheckboxChange}>
                                                             <Grid item xs={12}>
-                                                                {isLoadingArchived &&
-                                                                    <ClipLoader
-                                                                        size={25}
-                                                                        loading={isLoadingArchived}
-                                                                        aria-label="Loading Spinner"
-                                                                        color="#2db84c"
-                                                                    />
-                                                                }
-                                                                <b>{t("unarchived")}</b>
+                                                                <div className='relative'>
+                                                                    {isLoadingArchived &&
+                                                                        <ClipLoader
+                                                                            size={25}
+                                                                            loading={isLoadingArchived}
+                                                                            aria-label="Loading Spinner"
+                                                                            color="#2db84c"
+                                                                        />
+                                                                    }
+                                                                    <b>{t("unarchived")}</b>
+                                                                </div>
                                                             </Grid>
                                                         </Button>
                                                     }
