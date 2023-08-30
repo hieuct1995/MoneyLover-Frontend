@@ -157,7 +157,7 @@ export default function CardWallet() {
                                         <div key={wallet.id}>
                                             <Button onClick={() => handleOpenSlide(wallet.id)} variant="outlined"
                                                 fullWidth color="success"
-                                                sx={{ color: "black", paddingX: 0}}>
+                                                sx={{ color: "black", paddingX: 0 }}>
                                                 <div className='w-full flex justify-between'>
                                                     <div className='flex items-center gap-4 ml-4 py-4'>
                                                         <img src={wallet.icon.icon}
@@ -179,13 +179,17 @@ export default function CardWallet() {
                                 </>
                             </Card>
                         </Grid>
-                        <ClipLoader
-                        size={35}
-                        loading={isLoading}
-                        // cssOverride={override}
-                        aria-label="Loading Spinner"
-                        color="#2db84c"
-                    />
+                        { isLoading &&
+                            <div className='flex items-center w-full justify-center'>
+                            <ClipLoader
+                                size={35}
+                                loading={isLoading}
+                                // cssOverride={override}
+                                aria-label="Loading Spinner"
+                                color="#2db84c"
+                            />
+                        </div>
+                        }
                         {walletSelect && checked && <Slide direction="left" in={checked} mountOnEnter unmountOnExit>
                             < Grid item xs={8}>
                                 <Card variant="outlined">
