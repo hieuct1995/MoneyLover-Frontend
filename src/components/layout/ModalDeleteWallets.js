@@ -76,12 +76,14 @@ export default function ModalDeleteWallets({ idWallet, onClose }) {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button color="success" variant="outlined" onClick={handleClose} autoFocus>{t("Cancel")}</Button>
-                <Button color="error" variant="contained" onClick={() => {
-                    handleDelete()
-                }}>
-                    {t("DELETE")}
-                </Button>
+                <div className='flex justify-center gap-4'>
+                    <Button color="success" variant="outlined" onClick={handleClose} autoFocus>{t("Cancel")}</Button>
+                    <Button color="error" variant="contained" onClick={() => {
+                        handleDelete()
+                    }}>
+                        {t("DELETE")}
+                    </Button>
+                </div>
             </DialogActions>
         </Dialog>
     </div>);

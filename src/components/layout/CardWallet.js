@@ -299,7 +299,7 @@ export default function CardWallet() {
                                                             <Grid item xs={12}>
                                                                 {isLoadingArchived &&
                                                                     <ClipLoader
-                                                                        size={35}
+                                                                        size={25}
                                                                         loading={isLoadingArchived}
                                                                         cssOverride={override}
                                                                         aria-label="Loading Spinner"
@@ -329,7 +329,7 @@ export default function CardWallet() {
                                                                 <Grid item xs={12}>
                                                                     {isLoadingArchived &&
                                                                         <ClipLoader
-                                                                            size={35}
+                                                                            size={25}
                                                                             loading={isLoadingArchived}
                                                                             cssOverride={override}
                                                                             aria-label="Loading Spinner"
@@ -352,7 +352,7 @@ export default function CardWallet() {
                                                             <Grid item xs={12}>
                                                                 {isLoadingArchived &&
                                                                     <ClipLoader
-                                                                        size={35}
+                                                                        size={25}
                                                                         loading={isLoadingArchived}
                                                                         cssOverride={override}
                                                                         aria-label="Loading Spinner"
@@ -370,7 +370,7 @@ export default function CardWallet() {
                                                             <Grid item xs={12}>
                                                                 {isLoadingArchived &&
                                                                     <ClipLoader
-                                                                        size={35}
+                                                                        size={25}
                                                                         loading={isLoadingArchived}
                                                                         cssOverride={override}
                                                                         aria-label="Loading Spinner"
