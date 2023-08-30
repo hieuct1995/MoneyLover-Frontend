@@ -298,15 +298,16 @@ export default function CardWallet() {
                                                             onClick={handleCheckboxChange}>
                                                             <Grid item xs={12}>
                                                                 <div className='relative'>
+                                                                    <b>{t("unarchived")}</b>
                                                                     {isLoadingArchived &&
                                                                         <ClipLoader
                                                                             size={25}
                                                                             loading={isLoadingArchived}
+                                                                            cssOverride={override}
                                                                             aria-label="Loading Spinner"
                                                                             color="#2db84c"
                                                                         />
                                                                     }
-                                                                    <b>{t("unarchived")}</b>
                                                                 </div>
                                                             </Grid>
                                                         </Button>
@@ -333,6 +334,7 @@ export default function CardWallet() {
                                                                             <ClipLoader
                                                                                 size={25}
                                                                                 loading={isLoadingArchived}
+                                                                                cssOverride={override}
                                                                                 aria-label="Loading Spinner"
                                                                                 color="#2db84c"
                                                                             />
@@ -357,6 +359,7 @@ export default function CardWallet() {
                                                                         <ClipLoader
                                                                             size={25}
                                                                             loading={isLoadingArchived}
+                                                                            cssOverride={override}
                                                                             aria-label="Loading Spinner"
                                                                             color="#2db84c"
                                                                         />
@@ -376,6 +379,7 @@ export default function CardWallet() {
                                                                         <ClipLoader
                                                                             size={25}
                                                                             loading={isLoadingArchived}
+                                                                            cssOverride={override}
                                                                             aria-label="Loading Spinner"
                                                                             color="#2db84c"
                                                                         />

@@ -64,7 +64,7 @@ export default function ModalDeleteWallets({ idWallet, onClose }) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    <div className='flex justify-center min-h-[40px]'>
+                    <div className='flex justify-center min-h-[20px] pb-2'>
                         <ClipLoader
                             size={35}
                             loading={isLoading}
@@ -75,7 +75,6 @@ export default function ModalDeleteWallets({ idWallet, onClose }) {
                     </div>
                 </DialogContentText>
             </DialogContent>
-
             <div className='flex justify-center gap-4 py-2'>
                 <Button color="success" variant="outlined" onClick={handleClose} autoFocus>{t("Cancel")}</Button>
                 <Button color="error" variant="contained" onClick={() => {
