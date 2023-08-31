@@ -59,7 +59,9 @@ export default function TransactionCard({ openModal, closeModal }) {
     }, []);
 
     useEffect(() => {
-        setIsLoading(true);
+        if (allTransactionsAndType.length === 0) {
+            setIsLoading(true);
+        }
         let totalInflow = 0;
         let totalOutflow = 0
         let timeNow = getTimeByMonth(monthSelect?.month, monthSelect?.year);
@@ -77,9 +79,9 @@ export default function TransactionCard({ openModal, closeModal }) {
                         }
                     })
                 })
-                setIsLoading(false);
                 dispatch(getAllTransactionsAndType(transactionListAndType))
                 setCalculate({ totalInflow, totalOutflow });
+                setIsLoading(false);
             }).catch(err => console.log(err.message))
         }
     }, [allTransaction, monthSelect])
