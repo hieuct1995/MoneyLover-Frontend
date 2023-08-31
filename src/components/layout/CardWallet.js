@@ -30,7 +30,6 @@ const override = {
 
 export default function CardWallet() {
     const [isLoading, setIsLoading] = React.useState(false);
-    const [isLoadingArchived, setIsLoadingArchived] = React.useState(false);
     const [isLoadingLeave, setIsLoadingLeave] = React.useState(false);
     const { t } = useTranslation()
     const dispatch = useDispatch();
@@ -90,9 +89,7 @@ export default function CardWallet() {
         setChecked(true);
     }
     const handleCheckboxChange = () => {
-        setIsLoadingArchived(true);
         WalletService.archivedWallet(walletSelect.id).then(() => {
-            setIsLoadingArchived(false);
             handleOpenSlide(walletSelect?.id)
         })
     };
@@ -296,15 +293,6 @@ export default function CardWallet() {
                                                         <Button sx={{ borderTop: "1px solid #ececec", color: "green" }}
                                                             fullWidth
                                                             onClick={handleCheckboxChange}>
-                                                            {isLoadingArchived &&
-                                                                <ClipLoader
-                                                                    size={25}
-                                                                    loading={isLoadingArchived}
-                                                                    cssOverride={override}
-                                                                    aria-label="Loading Spinner"
-                                                                    color="#2db84c"
-                                                                />
-                                                            }
                                                             <Grid item xs={12}>
                                                                 <b>{t("unarchived")}</b>
                                                             </Grid>
@@ -326,15 +314,6 @@ export default function CardWallet() {
                                                             <Button sx={{ borderTop: "1px solid #ececec", color: "green" }}
                                                                 fullWidth
                                                                 onClick={handleCheckboxChange}>
-                                                                {isLoadingArchived &&
-                                                                    <ClipLoader
-                                                                        size={25}
-                                                                        loading={isLoadingArchived}
-                                                                        cssOverride={override}
-                                                                        aria-label="Loading Spinner"
-                                                                        color="#2db84c"
-                                                                    />
-                                                                }
                                                                 <Grid item xs={12}>
                                                                     <b>{t("unarchived")}</b>
                                                                 </Grid>
@@ -349,15 +328,6 @@ export default function CardWallet() {
                                                         <Button sx={{ borderTop: "1px solid #ececec", color: "green" }}
                                                             fullWidth
                                                             onClick={handleCheckboxChange}>
-                                                            {isLoadingArchived &&
-                                                                <ClipLoader
-                                                                    size={25}
-                                                                    loading={isLoadingArchived}
-                                                                    cssOverride={override}
-                                                                    aria-label="Loading Spinner"
-                                                                    color="#2db84c"
-                                                                />
-                                                            }
                                                             <Grid item xs={12}>
                                                                 <b>{t("unarchived")}</b>
                                                             </Grid>
@@ -367,15 +337,6 @@ export default function CardWallet() {
                                                         <Button sx={{ borderTop: "1px solid #ececec", color: "green" }}
                                                             fullWidth
                                                             onClick={handleCheckboxChange}>
-                                                            {isLoadingArchived &&
-                                                                <ClipLoader
-                                                                    size={25}
-                                                                    loading={isLoadingArchived}
-                                                                    cssOverride={override}
-                                                                    aria-label="Loading Spinner"
-                                                                    color="#2db84c"
-                                                                />
-                                                            }
                                                             <Grid item xs={12}>
                                                                 <b>{t("unarchived")}</b>
                                                             </Grid>

@@ -82,7 +82,7 @@ export default function NestedModal({ isOpen, onClose, onSubmit }) {
       setIconSelect({ id: 1, icon: 'https://static.moneylover.me/img/icon/icon.png' });
       setCurrencySelect(null);
       setIsValid(false);
-      setIsLoading(false)
+      setIsLoading(false);
       onSubmit();
     }).catch(err => console.log(err.message));
   }

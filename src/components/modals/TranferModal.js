@@ -7,6 +7,7 @@ import { getAllWallet, setWalletSelect } from '../../redux/walletSlice';
 import WalletSelectModal from './WalletSelectModal';
 import CurrencyInput from 'react-currency-input-field';
 import { formatDate } from '../datePick/datePick';
+import PacmanLoader from 'react-spinners/PacmanLoader';
 
 const style = {
     position: 'absolute',
@@ -20,6 +21,7 @@ const style = {
 };
 
 export default function TranferModal({ isOpen, onClose, onSubmit }) {
+    const [isLoading, setIsLoading] = React.useState(false);
     const [isValid, setIsValid] = React.useState(true);
     const [walletReceived, setWalletReceived] = React.useState(null);
     const walletSelect = useSelector(state => state.wallet.walletSelect);
@@ -50,6 +52,7 @@ export default function TranferModal({ isOpen, onClose, onSubmit }) {
     }, [moneyInput])
 
     const handleSubmit = () => {
+        setIsLoading(true);
         let walletIDReceived = walletReceived.id;
         let money = +moneyInput;
         let date = formatDate(new Date())
@@ -60,6 +63,7 @@ export default function TranferModal({ isOpen, onClose, onSubmit }) {
                 WalletService.getAllWallet().then(res => {
                     dispatch(setWalletSelect(walletTranfer));
                     dispatch(getAllWallet(res.data.walletList));
+                    setIsLoading(false);
                     onSubmit();
                 })
             } else if (res.data.message === "Money transfer failed!") {
@@ -116,6 +120,15 @@ export default function TranferModal({ isOpen, onClose, onSubmit }) {
                             </div>
                         </div>
                     </div>
+                    {isLoading && <div className='flex justify-center'>
+                        <PacmanLoader
+                            size={25}
+                            loading={isLoading}
+                            aria-label="Loading Spinner"
+                            color="#2db84c"
+                        />
+                    </div>
+                    }
                     <div className='py-[14px] px-6 flex justify-end'>
                         <button type='button' onClick={handleCancel} className='bg-slate-400 text-white text-sm font-medium py-2 px-8 uppercase rounded mr-3'>Cancel</button>
                         <button type='button' onClick={handleSubmit} className='bg-lightgreen text-white text-sm font-medium py-2 px-8 uppercase rounded disabled:bg-slate-400' disabled={!isValid || !checkMoney || !walletReceived}>Save</button>
