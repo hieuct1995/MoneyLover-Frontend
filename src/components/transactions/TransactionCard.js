@@ -151,6 +151,7 @@ export default function TransactionCard({ openModal, closeModal }) {
     }, [walletSelect])
 
     const handleSelectMonth = (option) => {
+        setIsLoading(true)
         setChecked(false);
         if (option === "this") {
             dispatch(setMonthSelect({ month: monthSelect.month, year: monthSelect.year }));
@@ -163,6 +164,7 @@ export default function TransactionCard({ openModal, closeModal }) {
             if (monthSelect.month < 12) dispatch(setMonthSelect({ month: monthSelect.month + 1, year: monthSelect.year }))
             else dispatch(setMonthSelect({ month: 1, year: monthSelect.year + 1 }))
         }
+        setIsLoading(false);
     }
     useEffect(() => {
         let currentDate = new Date();
@@ -266,6 +268,16 @@ export default function TransactionCard({ openModal, closeModal }) {
                                 <>
                                     <div className="min-w-[350px] md:w-[600px] min-h-[300px] bg-zinc-100 rounded-md bg overflow-hidden">
                                         <div className="pt-4 bg-white">
+                                            {isLoading && <div className='flex justify-center'>
+                                                <ClipLoader
+                                                    size={25}
+                                                    loading={isLoading}
+                                                    cssOverride={override}
+                                                    aria-label="Loading Spinner"
+                                                    color="#2db84c"
+                                                />
+                                            </div>
+                                            }
                                             <div className="h-[48px] w-[600px] fomt-normal border-b flex justify-center">
                                                 <button onClick={() => handleSelectMonth('last')} className="w-full py-[15px] uppercase leading-4 text-sm font-semibold text-zinc-400">{t(`${monthDisplay.last}`)}</button>
                                                 <button onClick={() => handleSelectMonth('this')} className="w-full py-[15px] uppercase leading-4 text-sm font-semibold border-b-4 border-lightgreen text-lightgreen">{t(`${monthDisplay.this}`)}</button>
@@ -369,6 +381,16 @@ export default function TransactionCard({ openModal, closeModal }) {
                             (
                                 <div className="mt-10 w-[600px] h-[300px] bg-zinc-100 rounded-md bg overflow-hidden">
                                     <div className="pt-4 bg-white">
+                                        {isLoading && <div className='flex justify-center'>
+                                            <ClipLoader
+                                                size={25}
+                                                loading={isLoading}
+                                                cssOverride={override}
+                                                aria-label="Loading Spinner"
+                                                color="#2db84c"
+                                            />
+                                        </div>
+                                        }
                                         <div className=" h-[48px] fomt-normal border-b flex justify-center ">
                                             <button onClick={() => handleSelectMonth('last')} className="w-full py-[15px] uppercase leading-4 text-sm font-semibold text-zinc-400">{t(`${monthDisplay.last}`)}</button>
                                             <button onClick={() => handleSelectMonth('this')} className="w-full py-[15px] uppercase leading-4 text-sm font-semibold border-b-4 border-lightgreen text-lightgreen">{t(`${monthDisplay.this}`)}</button>
@@ -437,16 +459,6 @@ export default function TransactionCard({ openModal, closeModal }) {
                         </div>
                         :
                         null
-                    }
-                    {isLoading && <div className='flex justify-center'>
-                        <ClipLoader
-                            size={25}
-                            loading={isLoading}
-                            cssOverride={override}
-                            aria-label="Loading Spinner"
-                            color="#2db84c"
-                        />
-                    </div>
                     }
                 </div>
                 <AddTransactionModal isOpen={openModal} onClose={handleCloseModal}
