@@ -67,9 +67,7 @@ export default function TransactionCard({ openModal, closeModal }) {
     }, []);
 
     useEffect(() => {
-        if (allTransactionsAndType.length === 0) {
-            setIsLoading(true);
-        }
+        setIsLoading(true);
         let totalInflow = 0;
         let totalOutflow = 0
         let timeNow = getTimeByMonth(monthSelect?.month, monthSelect?.year);
@@ -151,7 +149,6 @@ export default function TransactionCard({ openModal, closeModal }) {
     }, [walletSelect])
 
     const handleSelectMonth = (option) => {
-        setIsLoading(true)
         setChecked(false);
         if (option === "this") {
             dispatch(setMonthSelect({ month: monthSelect.month, year: monthSelect.year }));
@@ -164,7 +161,6 @@ export default function TransactionCard({ openModal, closeModal }) {
             if (monthSelect.month < 12) dispatch(setMonthSelect({ month: monthSelect.month + 1, year: monthSelect.year }))
             else dispatch(setMonthSelect({ month: 1, year: monthSelect.year + 1 }))
         }
-        setIsLoading(false);
     }
     useEffect(() => {
         let currentDate = new Date();
@@ -270,7 +266,7 @@ export default function TransactionCard({ openModal, closeModal }) {
                                         <div className="pt-4 bg-white">
                                             {isLoading && <div className='flex justify-center'>
                                                 <ClipLoader
-                                                    size={25}
+                                                    size={55}
                                                     loading={isLoading}
                                                     cssOverride={override}
                                                     aria-label="Loading Spinner"
@@ -383,7 +379,7 @@ export default function TransactionCard({ openModal, closeModal }) {
                                     <div className="pt-4 bg-white">
                                         {isLoading && <div className='flex justify-center'>
                                             <ClipLoader
-                                                size={25}
+                                                size={55}
                                                 loading={isLoading}
                                                 cssOverride={override}
                                                 aria-label="Loading Spinner"
