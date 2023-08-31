@@ -11,8 +11,18 @@ import { getAllTransaction, setTransactionSelect } from '../../redux/transaction
 import {getAllWallet, setWalletSelect} from '../../redux/walletSlice';
 import {WalletService} from "../../services/wallet.service";
 import {useTranslation} from "react-i18next";
+import ClipLoader from "react-spinners/ClipLoader";
+
+const override = {
+    position: "absolute",
+    bgcolor: '#fff',
+    left: "50%",
+    top: "50%",
+    transform: 'translate(-50%, -50%)',
+};
 
 export default function ModalDeleteTrans({ idWallet, onClose }) {
+    const [isLoading, setIsLoading] = React.useState(false);
     const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
     let transactionSelect= useSelector(state => state.transaction.transactionSelect);
@@ -26,6 +36,7 @@ export default function ModalDeleteTrans({ idWallet, onClose }) {
         setOpen(false);
     };
     const handleDelete = () => {
+        setIsLoading(true);
         TransactionService.deleteTransaction(idWallet, transactionSelect?.id).then((res) => {
             if (res.data.message === 'Delete transaction success!') {
                 let newMoney;
@@ -40,6 +51,7 @@ export default function ModalDeleteTrans({ idWallet, onClose }) {
                     WalletService.getAllWallet().then(res => {
                         dispatch(getAllWallet(res.data.walletList));
                     })
+                    setIsLoading(false);
                     onClose();
 
                 }).catch(err => console.log(err.message));
@@ -66,7 +78,13 @@ export default function ModalDeleteTrans({ idWallet, onClose }) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    {t("Delete can't get it back ^^")}
+                <ClipLoader
+                        size={25}
+                        loading={isLoading}
+                        cssOverride={override}
+                        aria-label="Loading Spinner"
+                        color="#2db84c"
+                    />
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
