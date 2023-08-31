@@ -68,6 +68,7 @@ export default function TranferModal({ isOpen, onClose, onSubmit }) {
                     setMoneyInput(0);
                 })
             } else if (res.data.message === "Money transfer failed!") {
+                onClose();
                 Swal.fire({
                     title: 'Chuyển tiền thất bại',
                     text: 'Không có quyền chuyển tiền',
@@ -75,6 +76,7 @@ export default function TranferModal({ isOpen, onClose, onSubmit }) {
                     confirmButtonText: 'OK'
                 });
             } else {
+                onClose();
                 Swal.fire({
                     title: 'Chuyển tiền thất bại',
                     text: 'Số dư không đủ',
