@@ -10,12 +10,13 @@ import { getAllTransaction, setMonthSelect, setTransactionSelect } from '../../r
 import { WalletService } from "../../services/wallet.service";
 import { useTranslation } from "react-i18next";
 import CurrencyInput from 'react-currency-input-field';
+import PacmanLoader from 'react-spinners/PacmanLoader';
 
-export function getCurrentMonth(dateString){
+export function getCurrentMonth(dateString) {
     const date = dateString.split('-');
     const year = date[0];
     const month = date[1]
-    return {month: parseInt(month), year: parseInt(year)}
+    return { month: parseInt(month), year: parseInt(year) }
 }
 
 const style = {
@@ -30,6 +31,7 @@ const style = {
 };
 
 export default function AddTransactionModal({ isOpen, onClose, onSubmit }) {
+    const [isLoading, setIsLoading] = React.useState(false);
     const [isValid, setIsValid] = React.useState(false);
     const walletSelect = useSelector(state => state.wallet.walletSelect);
     const [categorySelect, setCategorySelect] = React.useState(null);
@@ -59,14 +61,15 @@ export default function AddTransactionModal({ isOpen, onClose, onSubmit }) {
             (value > 1000000000) ? setCheckMoney(false) : setCheckMoney(true);
         }
     }
-    
+
     React.useEffect(() => {
         if (walletSelect && categorySelect && dataInput.money > 0) setIsValid(true)
         else setIsValid(false);
-    },[dataInput])
+    }, [dataInput])
 
 
     const handleSubmit = () => {
+        setIsLoading(true);
         let { money, note } = dataInput;
         let amount = +money;
         let date = dateInput;
@@ -88,11 +91,13 @@ export default function AddTransactionModal({ isOpen, onClose, onSubmit }) {
                         dispatch(getAllWallet(res.data.walletList));
                     })
                     dispatch(setMonthSelect(monthCurent));
+                    setIsLoading(false);
+                    onSubmit();
                     setDataInput({ money: 0, note: '' });
                     setDateInput(formatDate(new Date()));
                     setIsValid(false);
                     setCheckMoney(true);
-                    onSubmit();
+
                 })
             } else {
                 alert("Không có quyền thêm giao dịch");
@@ -149,7 +154,7 @@ export default function AddTransactionModal({ isOpen, onClose, onSubmit }) {
                             <div className='w-[450px] py-[7.25px] pl-4 pr-3 border border-gray-300 rounded-lg hover:border-gray-500'>
                                 <p className='text-[12px] pb-[3px] text-slate-400'>{t("Note")}</p>
                                 <div className='pb-1'>
-                                    <input onChange={handleChangeAdd} className='inputAdd w-full h-[26px] text-[17px] focus:outline-none' tabIndex="-1" type="text" placeholder={t("Note")} name="note" value={dataInput.note}/>
+                                    <input onChange={handleChangeAdd} className='inputAdd w-full h-[26px] text-[17px] focus:outline-none' tabIndex="-1" type="text" placeholder={t("Note")} name="note" value={dataInput.note} />
                                 </div>
                             </div>
                         </div>
@@ -160,6 +165,15 @@ export default function AddTransactionModal({ isOpen, onClose, onSubmit }) {
                             </div>
                         </div>
                     </div>
+                    {isLoading && <div className='flex justify-center'>
+                        <PacmanLoader
+                            size={25}
+                            loading={isLoading}
+                            aria-label="Loading Spinner"
+                            color="#2db84c"
+                        />
+                    </div>
+                    }
                     <div className='py-[14px] px-6 flex justify-end'>
                         <button type='button' onClick={handleCancel} className='bg-slate-400 text-white text-sm font-medium py-2 px-8 uppercase rounded mr-3'>{t("Cancel")}</button>
                         <button type='button' onClick={handleSubmit} className='bg-lightgreen text-white text-sm font-medium py-2 px-8 uppercase rounded disabled:bg-slate-400' disabled={!isValid || !checkMoney}>{t("Save")}</button>

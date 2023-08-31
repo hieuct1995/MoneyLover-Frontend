@@ -261,7 +261,7 @@ export default function TransactionCard({ openModal, closeModal }) {
             <div className='ml-[92px] px-4 mt-10'>
                 <div className='flex justify-center gap-4'>
                     <div className={`component`}>
-                        {!isLoading && allTransactionsAndType?.length > 0 ?
+                        {allTransactionsAndType?.length > 0 ?
                             (
                                 <>
                                     <div className="min-w-[350px] md:w-[600px] min-h-[300px] bg-zinc-100 rounded-md bg overflow-hidden">
@@ -366,7 +366,7 @@ export default function TransactionCard({ openModal, closeModal }) {
                                 </>
                             )
                             :
-                            (
+                            (!isLoading ?
                                 <div className="mt-10 w-[600px] h-[300px] bg-zinc-100 rounded-md bg overflow-hidden">
                                     <div className="pt-4 bg-white">
                                         <div className=" h-[48px] fomt-normal border-b flex justify-center ">
@@ -382,6 +382,8 @@ export default function TransactionCard({ openModal, closeModal }) {
                                         </div>
                                     </div>
                                 </div>
+                                :
+                                null
                             )
                         }
                     </div>
