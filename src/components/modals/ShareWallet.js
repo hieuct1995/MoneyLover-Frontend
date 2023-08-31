@@ -8,6 +8,7 @@ import Select from '@mui/material/Select';
 import {useSelector} from "react-redux";
 import {useState} from "react";
 import { getMessage } from "../../redux/walletSlice";
+import Swal from "sweetalert2";
 
 const style = {
     position: 'absolute',
@@ -60,6 +61,12 @@ export default function ShareWallet({isOpen, onClose}) {
         setDataInput(null);
         setPermission(null);
         socket?.emit('sendMessage', {senderEmail, receiverEmail, message, walletInfo, permission});
+        Swal.fire({
+            title: 'Chia sẻ ví thành công!',
+            text: `Đã gửi yêu cầu chia sẻ ví đến ${receiverEmail}.`,
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
         // localStorage.setItem(`sendMessage_${user.id}`, {senderEmail, receiverEmail, message, walletInfo, permission})
         // const newSendMessage = {id: Date.now(), senderEmail, receiverEmail, message, walletInfo, permission};
     }
