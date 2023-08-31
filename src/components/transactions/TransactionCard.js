@@ -21,7 +21,8 @@ import ClipLoader from 'react-spinners/ClipLoader';
 
 const override = {
     position: "absolute",
-    bgcolor: '#fff',
+    bgcolor: 'rgba(255, 255, 255, 0.8)',
+    borderWidth: 5,
     left: "50%",
     top: "50%",
     transform: 'translate(-50%, -50%)',
