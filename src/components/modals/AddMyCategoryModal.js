@@ -3,6 +3,7 @@ import { Box, Modal } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { TransactionService } from '../../services/transaction.service';
 import { getAllCategory, getAllExpense, getAllIncome } from '../../redux/transactionSlice';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const style = {
     position: 'absolute',
@@ -15,7 +16,17 @@ const style = {
     boxShadow: 24,
 };
 
+const override = {
+    position: "absolute",
+    bgcolor: 'rgba(255, 255, 255, 0.8)',
+    borderWidth: 3,
+    left: "50%",
+    top: "50%",
+    transform: 'translate(-50%, -50%)',
+};
+
 export default function AddMyCategoryModal({ isOpen, onClose, onSubmit, selectType }) {
+    const [isLoading, setIsLoading] = React.useState(false);
     const [input, setInput] = React.useState('');
     const [isVaid, setIsValid] = React.useState(false);
     const [checkName, setCheckName] = React.useState(true);
@@ -23,6 +34,7 @@ export default function AddMyCategoryModal({ isOpen, onClose, onSubmit, selectTy
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
+        setIsLoading(true);
         let typeCategory = selectType ? 'income' : 'expense';
         TransactionService.createNewCategory({ type: typeCategory, name: input }).then(res => {
             if (res.data.message === "Create category success") {
@@ -33,6 +45,7 @@ export default function AddMyCategoryModal({ isOpen, onClose, onSubmit, selectTy
                     dispatch(getAllCategory(categoryList));
                     dispatch(getAllIncome(inComeList));
                     dispatch(getAllExpense(expenseList));
+                    setIsLoading(false);
                 })
             }
         }).catch(e => console.log(e.message));
@@ -81,6 +94,15 @@ export default function AddMyCategoryModal({ isOpen, onClose, onSubmit, selectTy
                         <button type='button' onClick={handleCancel} className='bg-slate-400 text-white text-sm font-medium py-2 px-8 uppercase rounded mr-3'>Cancel</button>
                         <button type='button' onClick={handleSubmit} className='bg-lightgreen text-white text-sm font-medium py-2 px-8 uppercase rounded disabled:bg-slate-400' disabled={!isVaid || !checkName}>Save</button>
                     </div>
+                    {isLoading && 
+                        <ClipLoader
+                            size={35}
+                            loading={isLoading}
+                            cssOverride={override}
+                            aria-label="Loading Spinner"
+                            color="#2db84c"
+                        />
+                    }
                 </Box>
             </Modal>
         </div>

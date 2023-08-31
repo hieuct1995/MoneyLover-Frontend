@@ -11,6 +11,7 @@ import NetInComeCard from "./NetInComeCard";
 import InComeCard from "./InComeCard";
 import ExpenseCard from "./ExpenseCard";
 import { useTranslation } from "react-i18next";
+import ClipLoader from 'react-spinners/ClipLoader';
 
 
 //chuyển từ dd/mm/yyyy -> date object
@@ -196,7 +197,17 @@ export function getTransByDate(transactions) {
     return transactionsByDate;
 }
 
+const override = {
+    position: "absolute",
+    bgcolor: 'rgba(255, 255, 255, 0.8)',
+    borderWidth: 5,
+    left: "50%",
+    top: "50%",
+    transform: 'translate(-50%, -50%)',
+};
+
 export default function ReportsCard() {
+    const [isLoading, setIsLoading] = useState(false);
     const { t } = useTranslation()
     const [openNetInCome, setOpenNetInCome] = useState(false);
     const [openInCome, setOpenInCome] = useState(false);
@@ -208,6 +219,7 @@ export default function ReportsCard() {
     const [balance, setBalance] = useState();
     const dispatch = useDispatch();
     useEffect(() => {
+        setIsLoading(true);
         let firstDay = convertDateFormat(dateSelect?.firstDay);
         let lastDay = convertDateFormat(dateSelect?.lastDay);
         if (walletSelect) {
@@ -224,6 +236,7 @@ export default function ReportsCard() {
                 dispatch(getDataBarChart(data));
                 dispatch(setDataByDate(dataByDate))
                 dispatch(setDataCalculated(dataCalculated));
+                setIsLoading(false);
             }).catch(err => console.log(err.message));
         }
     }, [dateSelect, walletSelect]);
@@ -347,6 +360,15 @@ export default function ReportsCard() {
                             </div>
                         </div>
                     </div>
+                    {isLoading && 
+                        <ClipLoader
+                            size={55}
+                            loading={isLoading}
+                            cssOverride={override}
+                            aria-label="Loading Spinner"
+                            color="#2db84c"
+                        />
+                    }
                     {openNetInCome && <NetInComeCard balance={balance} dayArr={dayArr} isOpen={openNetInCome} onClose={handleCloseNetInCard} />}
                     {openInCome && <InComeCard balance={balance} isOpen={openInCome} onClose={handleCloseInCard} />}
                     {openExpense && <ExpenseCard balance={balance} isOpen={openExpense} onClose={handleCloseExpenseCard} />}
