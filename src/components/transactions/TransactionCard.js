@@ -386,7 +386,7 @@ export default function TransactionCard({ openModal, closeModal }) {
                         }
                     </div>
 
-                    {(transactionSelect && checked && allTransactionsAndType?.length > 0) ?
+                    {(!isLoading && transactionSelect && checked && allTransactionsAndType?.length > 0) ?
                         <div className=''>
                             <Slide direction="left" in={checked} mountOnEnter unmountOnExit>
                                 <Card variant="outlined" className='md:w-[750px] min-h-[250px]'>
