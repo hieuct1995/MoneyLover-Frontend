@@ -91,7 +91,7 @@ export default function TransactionCard({ openModal, closeModal }) {
                 setIsLoading(false);
             }).catch(err => console.log(err.message))
         }
-    }, [allTransaction, monthSelect])
+    }, [monthSelect])
 
     const handleDownloadExcel = async () => {
         try {
