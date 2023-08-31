@@ -19,6 +19,14 @@ import { useTranslation } from "react-i18next";
 import axios from "axios";
 import PacmanLoader from 'react-spinners/PacmanLoader';
 
+const override = {
+    position: "absolute",
+    bgcolor: '#fff',
+    left: "50%",
+    top: "50%",
+    transform: 'translate(-50%, -50%)',
+};
+
 export function getTimeByMonth(month, year) {
     // const currentYear = new Date().getFullYear();
     const firstDay = new Date(year, month - 1, 1);
@@ -434,6 +442,7 @@ export default function TransactionCard({ openModal, closeModal }) {
                         <PacmanLoader
                             size={25}
                             loading={isLoading}
+                            cssOverride={override}
                             aria-label="Loading Spinner"
                             color="#2db84c"
                         />
