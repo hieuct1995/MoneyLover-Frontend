@@ -17,6 +17,7 @@ import { calculatorAmountByCategory } from '../card/ReportsCard';
 import numeral from 'numeral';
 import { useTranslation } from "react-i18next";
 import axios from "axios";
+import PacmanLoader from 'react-spinners/PacmanLoader';
 
 export function getTimeByMonth(month, year) {
     // const currentYear = new Date().getFullYear();
@@ -32,6 +33,7 @@ export function getYearNow(date) {
 }
 
 export default function TransactionCard({ openModal, closeModal }) {
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const { t } = useTranslation()
     const [checked, setChecked] = useState(false);
@@ -57,6 +59,7 @@ export default function TransactionCard({ openModal, closeModal }) {
     }, []);
 
     useEffect(() => {
+        setIsLoading(true);
         let totalInflow = 0;
         let totalOutflow = 0
         let timeNow = getTimeByMonth(monthSelect?.month, monthSelect?.year);
@@ -65,7 +68,6 @@ export default function TransactionCard({ openModal, closeModal }) {
         if (walletSelect) {
             TransactionService.getAllTransactionOfWalletAndType(walletSelect?.id, startDate, endDate).then(res => {
                 let transactionListAndType = res.data.transactionList;
-                dispatch(getAllTransactionsAndType(transactionListAndType))
                 transactionListAndType.forEach(trans => {
                     trans.forEach(item => {
                         if (item.category.type === 'expense') {
@@ -75,6 +77,8 @@ export default function TransactionCard({ openModal, closeModal }) {
                         }
                     })
                 })
+                setIsLoading(false);
+                dispatch(getAllTransactionsAndType(transactionListAndType))
                 setCalculate({ totalInflow, totalOutflow });
             }).catch(err => console.log(err.message))
         }
@@ -241,7 +245,7 @@ export default function TransactionCard({ openModal, closeModal }) {
     }, []);
 
 
-    
+
     return (
         <Slide direction="down" in={true} mountOnEnter unmountOnExit>
             <div className='ml-[92px] px-4 mt-10'>
@@ -423,6 +427,15 @@ export default function TransactionCard({ openModal, closeModal }) {
                         </div>
                         :
                         null
+                    }
+                    {isLoading && <div className='flex justify-center'>
+                        <PacmanLoader
+                            size={25}
+                            loading={isLoading}
+                            aria-label="Loading Spinner"
+                            color="#2db84c"
+                        />
+                    </div>
                     }
                 </div>
                 <AddTransactionModal isOpen={openModal} onClose={handleCloseModal}
