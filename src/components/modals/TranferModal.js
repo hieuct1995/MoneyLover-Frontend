@@ -65,10 +65,9 @@ export default function TranferModal({ isOpen, onClose, onSubmit }) {
                     dispatch(getAllWallet(res.data.walletList));
                     setIsLoading(false);
                     onSubmit();
-                    setMoneyInput(0);
                 })
             } else if (res.data.message === "Money transfer failed!") {
-                onClose();
+                onSubmit();
                 Swal.fire({
                     title: 'Chuyển tiền thất bại',
                     text: 'Không có quyền chuyển tiền',
@@ -76,7 +75,7 @@ export default function TranferModal({ isOpen, onClose, onSubmit }) {
                     confirmButtonText: 'OK'
                 });
             } else {
-                onClose();
+                onSubmit();
                 Swal.fire({
                     title: 'Chuyển tiền thất bại',
                     text: 'Số dư không đủ',
@@ -84,6 +83,7 @@ export default function TranferModal({ isOpen, onClose, onSubmit }) {
                     confirmButtonText: 'OK'
                 });
             }
+            setMoneyInput(0);
             setWalletReceived(null);
         }).catch(err => console.log(err.message));
     }
