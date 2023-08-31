@@ -294,7 +294,7 @@ export default function CardWallet() {
                                                             fullWidth
                                                             onClick={handleCheckboxChange}>
                                                             <Grid item xs={12}>
-                                                                <b>{t("unarchived")}</b>
+                                                                <b>{t("archived")}</b>
                                                             </Grid>
                                                         </Button>
                                                         <Button disabled={(walletSelect?.amountOfMoney <= 0) || (allWallet?.length <= 1)} onClick={handleOpenFormTranfer}
@@ -329,7 +329,7 @@ export default function CardWallet() {
                                                             fullWidth
                                                             onClick={handleCheckboxChange}>
                                                             <Grid item xs={12}>
-                                                                <b>{t("unarchived")}</b>
+                                                                <b>{t("archived")}</b>
                                                             </Grid>
                                                         </Button>
 

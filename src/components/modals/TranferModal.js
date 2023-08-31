@@ -8,6 +8,7 @@ import WalletSelectModal from './WalletSelectModal';
 import CurrencyInput from 'react-currency-input-field';
 import { formatDate } from '../datePick/datePick';
 import PacmanLoader from 'react-spinners/PacmanLoader';
+import Swal from 'sweetalert2';
 
 const style = {
     position: 'absolute',
@@ -58,17 +59,29 @@ export default function TranferModal({ isOpen, onClose, onSubmit }) {
         let date = formatDate(new Date())
         WalletService.tranferMoney(walletSelect?.id, { walletIDReceived, money, date }).then((res) => {
             if (res.data.message === 'Money transfer success!') {
-                setMoneyInput(0);
                 let walletTranfer = res.data.walletTransfer;
                 WalletService.getAllWallet().then(res => {
                     dispatch(setWalletSelect(walletTranfer));
                     dispatch(getAllWallet(res.data.walletList));
                     setIsLoading(false);
                     onSubmit();
+                    setMoneyInput(0);
                 })
             } else if (res.data.message === "Money transfer failed!") {
-                alert('Ví chuyển đến không có quyền owner!'); //sau thay thông báo
-            } else alert('Money not enough')
+                Swal.fire({
+                    title: 'Chuyển tiền thất bại',
+                    text: 'Không có quyền chuyển tiền',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                Swal.fire({
+                    title: 'Chuyển tiền thất bại',
+                    text: 'Số dư không đủ',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
             setWalletReceived(null);
         }).catch(err => console.log(err.message));
     }
