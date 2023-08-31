@@ -41,14 +41,17 @@ export default function TranferModal({ isOpen, onClose, onSubmit }) {
     }
 
     const handleChangeAmount = (value, name) => {
+        console.log('====================================');
+        console.log(walletSelect);
+        console.log('====================================');
         if (name === 'money') {
             setMoneyInput(value);
-            (value > 1000000000) ? setCheckMoney(false) : setCheckMoney(true);
+            (value > walletSelect?.amountOfMoney) ? setCheckMoney(false) : setCheckMoney(true);
         }
     }
 
     React.useEffect(() => {
-        if (moneyInput > 0) setIsValid(true)
+        if (moneyInput > 0 ) setIsValid(true)
         else setIsValid(false);
     }, [moneyInput])
 
