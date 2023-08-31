@@ -261,7 +261,7 @@ export default function TransactionCard({ openModal, closeModal }) {
             <div className='ml-[92px] px-4 mt-10'>
                 <div className='flex justify-center gap-4'>
                     <div className={`component`}>
-                        {allTransactionsAndType?.length > 0 ?
+                        {!isLoading && allTransactionsAndType?.length > 0 ?
                             (
                                 <>
                                     <div className="min-w-[350px] md:w-[600px] min-h-[300px] bg-zinc-100 rounded-md bg overflow-hidden">
