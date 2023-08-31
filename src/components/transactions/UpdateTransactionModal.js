@@ -11,6 +11,7 @@ import CurrencyInput from 'react-currency-input-field';
 import {WalletService} from "../../services/wallet.service";
 import {useTranslation} from "react-i18next";
 import { getCurrentMonth } from './AddTransactionModal';
+import PacmanLoader from 'react-spinners/PacmanLoader';
 
 const style = {
     position: 'absolute',
@@ -24,6 +25,7 @@ const style = {
 };
 
 export default function UpdateTransactionModal({ isOpen, onClose, onSubmit }) {
+    const [isLoading, setIsLoading] = React.useState(false);
     const [isValid, setIsValid] = React.useState(false);
     const walletSelect = useSelector(state => state.wallet.walletSelect);
     const transactionSelect = useSelector(state => state.transaction.transactionSelect);
@@ -74,6 +76,7 @@ export default function UpdateTransactionModal({ isOpen, onClose, onSubmit }) {
     const {t}=useTranslation()
 
     const handleSubmit = () => {
+        setIsLoading(true);
         let { money, note } = dataInput;
         let amount = +money;
         let date = transactionSelect?.date;
@@ -94,6 +97,7 @@ export default function UpdateTransactionModal({ isOpen, onClose, onSubmit }) {
                     // setDateTras(formatDate(new Date()));
                     // setIsValid(false);
                     dispatch(setMonthSelect(monthCurent));
+                    setIsLoading(false);
                     onSubmit();
                 }).catch(err => console.log(err.message));
             } else {
@@ -160,6 +164,15 @@ export default function UpdateTransactionModal({ isOpen, onClose, onSubmit }) {
                             </div>
                         </div>
                     </div>
+                    {isLoading && <div className='flex justify-center'>
+                        <PacmanLoader
+                            size={25}
+                            loading={isLoading}
+                            aria-label="Loading Spinner"
+                            color="#2db84c"
+                        />
+                    </div>
+                    }
                     <div className='py-[14px] px-6 flex justify-end'>
                         <button type='button' onClick={handleCancel} className='bg-slate-400 text-white text-sm font-medium py-2 px-8 uppercase rounded mr-3'>{t("Cancel")}</button>
                         <button type='button' onClick={handleSubmit} className='bg-lightgreen text-white text-sm font-medium py-2 px-8 uppercase rounded disabled:bg-slate-400' disabled={!isValid}>{t("Save")}</button>

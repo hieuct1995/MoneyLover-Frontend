@@ -17,7 +17,7 @@ import { calculatorAmountByCategory } from '../card/ReportsCard';
 import numeral from 'numeral';
 import { useTranslation } from "react-i18next";
 import axios from "axios";
-import PacmanLoader from 'react-spinners/PacmanLoader';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const override = {
     position: "absolute",
@@ -366,7 +366,7 @@ export default function TransactionCard({ openModal, closeModal }) {
                                 </>
                             )
                             :
-                            (!isLoading ?
+                            (
                                 <div className="mt-10 w-[600px] h-[300px] bg-zinc-100 rounded-md bg overflow-hidden">
                                     <div className="pt-4 bg-white">
                                         <div className=" h-[48px] fomt-normal border-b flex justify-center ">
@@ -382,8 +382,6 @@ export default function TransactionCard({ openModal, closeModal }) {
                                         </div>
                                     </div>
                                 </div>
-                                :
-                                null
                             )
                         }
                     </div>
@@ -441,7 +439,7 @@ export default function TransactionCard({ openModal, closeModal }) {
                         null
                     }
                     {isLoading && <div className='flex justify-center'>
-                        <PacmanLoader
+                        <ClipLoader
                             size={25}
                             loading={isLoading}
                             cssOverride={override}
